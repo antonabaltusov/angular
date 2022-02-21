@@ -1,6 +1,6 @@
-import { Course } from './course.model'
+import { ICourse } from './course.model'
 
-export class CourseClass implements Course{
+export class CourseClass implements ICourse{
   id: number;
   title: string;
   creation: Date;

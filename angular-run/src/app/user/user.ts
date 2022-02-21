@@ -1,6 +1,6 @@
-import { User } from './user.model'
+import { IUser } from './user.model'
 
-export class UserClass implements User{
+export class UserClass implements IUser{
   id: number;
   firstName: string;
   lastName: string;

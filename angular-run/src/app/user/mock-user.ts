@@ -1,6 +1,6 @@
-import { User } from "./user.model";
+import { IUser } from "./user.model";
 
-export const USER: User = {
+export const USER: IUser = {
   id: 1,
   firstName: 'Anton',
   lastName: 'Abaltusov',

@@ -7,6 +7,10 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LogoComponent } from './header/logo/logo.component';
 import { CoursesComponent } from './courses/courses.component';
+import { SettingsComponent } from './courses/settings/settings.component';
+import { FormsModule } from '@angular/forms';
+import { CoursesListComponent } from './courses/courses-list/courses-list.component';
+import { CoursesItemComponent } from './courses/courses-list/courses-item/courses-item.component';
 
 @NgModule({
   declarations: [
@@ -15,10 +19,14 @@ import { CoursesComponent } from './courses/courses.component';
     FooterComponent,
     LogoComponent,
     CoursesComponent,
+    SettingsComponent,
+    CoursesListComponent,
+    CoursesItemComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

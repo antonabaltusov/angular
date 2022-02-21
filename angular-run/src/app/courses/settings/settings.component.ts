@@ -6,8 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings.component.sass']
 })
 export class SettingsComponent implements OnInit {
+  public inputValue: string = '';
 
   constructor() { }
+
+  public search():void {
+    console.log(this.inputValue);
+  }
 
   ngOnInit(): void {
   }

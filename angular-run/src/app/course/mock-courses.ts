@@ -1,6 +1,6 @@
-import { Course } from './course.model';
+import { ICourse } from './course.model';
 
-export const COURSES: Course[] = [
+export const COURSES: ICourse[] = [
   { id: 0,
     title: 'Agnular2: From Zero To Hero',
     creation: new Date(2018, 5, 29),
