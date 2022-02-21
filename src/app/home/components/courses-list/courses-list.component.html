@@ -1,0 +1,2 @@
+<app-courses-item class="container" (onDelete)="delete($event)" *ngFor="let course of courses" [course]="course"></app-courses-item>
+<button (click)="loadMore()">Load more</button>

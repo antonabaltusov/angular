@@ -1,0 +1,13 @@
+import { IUser } from './user.model'
+
+export class UserClass implements IUser{
+  id: number;
+  firstName: string;
+  lastName: string;
+
+  constructor(id: number, firstName: string, lastName: string) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+}
