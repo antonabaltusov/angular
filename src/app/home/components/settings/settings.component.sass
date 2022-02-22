@@ -1,3 +1,53 @@
 .setting
   display: flex
-  margin-top: 20px
+  margin-top: 15px
+
+.search
+  width: 65%
+  height: 26px
+  background: white
+  border: none
+  border-radius: 8px
+  padding: 5px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  box-shadow: 3px 3px 3px 3px 3px black
+
+  &_button
+    height: 100%
+    border: none
+    border-radius: 3px
+    background: #ad3
+    color: white
+    font-size: 11px
+    &:hover
+      border: solid 1px #6f921d
+      background: #6f921d
+      cursor: pointer
+
+  &_input
+    height: 100%
+    width: 100%
+    border: none
+    outline: none
+    background: none
+
+.add-course
+  margin-left: 20px
+  border: solid 1px white
+  border-radius: 8px
+  background: none
+  color: white
+  padding: 3px 8px 3px 3px
+  align-items: center
+  display: flex
+  &:hover
+    background: white
+    cursor: pointer
+    color: black
+    .add-course_svg
+      fill: black
+  &_svg
+    margin: 0px 3px
+    fill: white
