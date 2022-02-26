@@ -1,4 +1,4 @@
-import { IUser } from "./user.model";
+import { IUser } from "../shared/models/user/user.model";
 
 export const USER: IUser = {
   id: 1,

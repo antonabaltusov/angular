@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { USER } from '../../../shared/models/user/mock-user';
+import { USER } from '../../../mocks/mock-user';
 
 @Component({
   selector: 'app-header',

@@ -11,6 +11,10 @@ import { SettingsComponent } from './home/components/settings/settings.component
 import { FormsModule } from '@angular/forms';
 import { CoursesListComponent } from './home/components/courses-list/courses-list.component';
 import { CoursesItemComponent } from './home/components/courses-item/courses-item.component';
+import { BgCardDirective } from './shared/directives/bg-card.directive';
+import { DurationPipe } from './shared/pipes/duration.pipe';
+import { OrderByPipe } from './shared/pipes/order-by.pipe';
+import { SearchByTitlePipe } from './shared/pipes/search-by-title.pipe';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,10 @@ import { CoursesItemComponent } from './home/components/courses-item/courses-ite
     SettingsComponent,
     CoursesListComponent,
     CoursesItemComponent,
+    BgCardDirective,
+    DurationPipe,
+    OrderByPipe,
+    SearchByTitlePipe,
   ],
   imports: [
     BrowserModule,

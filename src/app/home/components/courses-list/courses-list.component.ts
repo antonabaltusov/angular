@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ICourse } from 'src/app/shared/models/course/course.model';
-import { COURSES } from 'src/app/shared/models/course/mock-courses';
+import { COURSES } from 'src/app/mocks/mock-courses';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
-  styleUrls: ['./courses-list.component.sass']
+  styleUrls: ['./courses-list.component.sass'],
 })
 export class CoursesListComponent implements OnInit {
-  public courses: ICourse[] = COURSES;
+  @Input() courses: ICourse[];
+
 
   constructor() { }
 
 
   ngOnInit(): void {
   }
+
 
   public delete(id: number): void {
     console.log(id);
