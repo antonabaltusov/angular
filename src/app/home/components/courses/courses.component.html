@@ -1,7 +1,0 @@
-<div class="courses">
-  <div class="container">
-    <h1>Find or add angular courses</h1>
-    <app-settings (onSearch)="changeSearch($event)"></app-settings>
-  </div>
-</div>
-<app-courses-list [courses]="courses | orderBy:sortBy"></app-courses-list>

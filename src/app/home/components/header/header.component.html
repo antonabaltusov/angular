@@ -1,9 +1,9 @@
-<header>
+<header [ngClass]="{'background-white': isAuth()}">
   <div class="container header">
     <app-logo></app-logo>
-    <div class="user">
+    <div *ngIf="isAuth()" class="user">
       <p>{{userName}}</p>
-      <button class="log-off">Log off</button>
+      <button (click)="logout()" class="log-off">Log off</button>
     </div>
   </div>
 </header>

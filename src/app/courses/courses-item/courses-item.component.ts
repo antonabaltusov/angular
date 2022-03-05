@@ -35,7 +35,7 @@ export class CoursesItemComponent implements OnInit {
   // }
   // ngOnDestroy():void {
   //   console.log('ngOnDestroy');
-  // }
+  //}
 
   public delete(): void {
     this.onDelete.emit(this.course?.id);

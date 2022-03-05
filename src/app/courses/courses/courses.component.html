@@ -1,0 +1,11 @@
+<div *ngIf="isAuth()" class="courses">
+  <div class="container">
+    <h1>Find or add angular courses</h1>
+    <app-settings (onSearch)="changeSearch($event)"></app-settings>
+  </div>
+</div>
+<div *ngIf="isAuth()" class="courses-list">
+  <app-courses-item (onDelete)="delete($event)" *ngFor="let course of courses | orderBy:sortBy" [course]="course"></app-courses-item>
+  <button *ngIf="courses.length" class="container load-more" (click)="loadMore()">Load more</button>
+  <h1 class="empty-list" *ngIf="!courses.length">NO DATA. FEEL FREE TO ADD NEW COURSE</h1>
+</div>

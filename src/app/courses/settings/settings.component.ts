@@ -18,11 +18,4 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  sort(check:boolean): void {
-    console.log(check);
-
-    console.log(this.sortActive)
-    //this.sortActive ? console.log(this.sortActive):console.log(this.sortActive);
-  }
 }
