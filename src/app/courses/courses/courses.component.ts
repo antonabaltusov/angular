@@ -15,7 +15,7 @@ export class CoursesComponent implements OnInit {
   public coursesData: ICourse[];
   public sortBy: string = 'creation';
   public courses: ICourse[]
-  private searchBy: string;
+  public inputValue: string = '';
 
 
   constructor(
@@ -29,16 +29,14 @@ export class CoursesComponent implements OnInit {
     this.courses = this.coursesData;
   }
 
-  public changeSearch(value: string): void{
-    this.courses = this.searchByTitle.transform(this.coursesData, value)
-    this.searchBy = value;
+  public search(): void{
+    this.courses = this.searchByTitle.transform(this.coursesData, this.inputValue)
   }
   public  async delete(id: number): Promise<void> {
     if(confirm("Do you really want to delete this course")){
       if(await this.coursesService.removeCourse(id)) {
         this.coursesData =  await this.coursesService.getList();
-        console.log(this.coursesData);
-        this.courses = this.searchByTitle.transform(this.coursesData, this.searchBy)
+        this.search();
       }
     }
   }
@@ -46,7 +44,7 @@ export class CoursesComponent implements OnInit {
     console.log('loadMore');
   }
 
-  isAuth():boolean {
-    return this.authService.isAuth()
+  async isAuth():Promise<boolean> {
+    return await this.authService.isAuth()
   }
 }

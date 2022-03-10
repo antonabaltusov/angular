@@ -11,8 +11,8 @@ export class CoursesService{
 
   constructor() { }
 
-  getList(): Promise<ICourse[]> {
-    return Promise.resolve(this.courses);
+  getList(): ICourse[] {
+    return this.courses;
   }
   createCourse(course: ICourse):Promise<ICourse> {
     let result;
