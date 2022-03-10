@@ -1,8 +1,8 @@
 <app-header></app-header>
 <div class="wrapper">
   <div class="content">
-    <router-outlet></router-outlet>
-    <login-page></login-page>
+    <router-outlet *ngIf="isAuth"></router-outlet>
+    <login-page *ngIf="!isAuth"></login-page>
   </div>
   <app-footer class="footer"></app-footer>
 </div>

@@ -3,6 +3,7 @@ import { CoursesComponent } from './courses/courses.component';
 import { CoursesItemComponent } from './courses-item/courses-item.component';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
+import { HeaderComponent } from '../home/components/header/header.component';
 
 
 
@@ -13,7 +14,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [
     CoreModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [
     CoursesComponent

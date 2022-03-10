@@ -9,24 +9,20 @@ import { SearchByTitlePipe } from 'src/app/shared/pipes/search-by-title.pipe';
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.sass'],
-  providers: [ SearchByTitlePipe, CoursesService, AuthService ]
+  providers: [ SearchByTitlePipe, CoursesService]
 })
 export class CoursesComponent implements OnInit {
-  public coursesData: ICourse[];
+  public coursesData: ICourse[] = this.coursesService.getList();
   public sortBy: string = 'creation';
-  public courses: ICourse[]
+  public courses: ICourse[] = this.coursesData;
   public inputValue: string = '';
-
 
   constructor(
     private searchByTitle: SearchByTitlePipe,
     private coursesService: CoursesService,
-    private authService: AuthService,
     ) {}
 
   async ngOnInit(): Promise<void> {
-    this.coursesData =  await this.coursesService.getList();
-    this.courses = this.coursesData;
   }
 
   public search(): void{
@@ -43,8 +39,7 @@ export class CoursesComponent implements OnInit {
   public loadMore(): void {
     console.log('loadMore');
   }
-
-  async isAuth():Promise<boolean> {
-    return await this.authService.isAuth()
-  }
+  // async isAuth():Promise<boolean> {
+  //   return await this.authService.isAuth()
+  // }
 }
