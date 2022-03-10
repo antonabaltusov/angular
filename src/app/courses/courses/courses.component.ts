@@ -28,6 +28,7 @@ export class CoursesComponent implements OnInit {
   public search(): void{
     this.courses = this.searchByTitle.transform(this.coursesData, this.inputValue)
   }
+
   public  async delete(id: number): Promise<void> {
     if(confirm("Do you really want to delete this course")){
       if(await this.coursesService.removeCourse(id)) {
@@ -36,6 +37,7 @@ export class CoursesComponent implements OnInit {
       }
     }
   }
+
   public loadMore(): void {
     console.log('loadMore');
   }

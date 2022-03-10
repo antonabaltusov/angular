@@ -48,19 +48,52 @@ describe('CoursesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("Компонент должен вызвать метод, по клику на кнопку в шаблоне", () => {
+  it("should call metod 'loadMore', by click button", () => {
     const event = spyOn(component, "loadMore");
     const button = fixture.debugElement.query(By.css(".load-more"));
     button.nativeElement.click();
     expect(event).toHaveBeenCalled();
   });
 
-  // it('should emit changeSearch from onSearch', () => {
-  //   const teg = fixture.debugElement.query(By.css('app-settings'));
-  //   console.log('teg-'+teg);
-  //   teg.triggerEventHandler('onSearch', null);
-  //   fixture.detectChanges();
+  it("should call console.log('loadMore')", () => {
+    const event = spyOn(console, "log");
+    component.loadMore();
+    expect(event).toHaveBeenCalledWith("loadMore");
+  });
 
-  //   expect(spy.calls.any()).toBeTruthy();
-  // });
+  it("should call metod 'search', by click button", () => {
+    const event = spyOn(component, "search");
+    const button = fixture.debugElement.query(By.css(".search_button"));
+    button.nativeElement.click();
+    expect(event).toHaveBeenCalled();
+  });
+
+  it("should cange courses", () => {
+    let coursesBefore = component.courses;
+    component.inputValue = 'angular'
+    component.search();
+    let difference = coursesBefore.length != component.courses.length;
+    expect(difference).toBeTrue();
+  });
+
+  it("should call metod 'delete', by event onDelete", () => {
+    const event = spyOn(component, "delete");
+    const courses_item = fixture.debugElement.query(By.css("app-courses-item"));
+    courses_item.triggerEventHandler('onDelete', null);
+    expect(event).toHaveBeenCalled();
+  });
+
+  it("should call confirm", () => {
+    const event = spyOn(window, 'confirm');
+    component.delete(1);
+    expect(event).toHaveBeenCalledWith("Do you really want to delete this course");
+  });
+
+  it("should change value of inputValue when change inpue value", () => {
+    const input = fixture.debugElement.query(By.css(".search_input"));
+    input.nativeElement.value = 'text';
+    input.nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(component.inputValue).toBe("text");
+  });
 });

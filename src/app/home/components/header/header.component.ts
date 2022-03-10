@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { USER } from '../../../mocks/mock-user';
 
@@ -10,19 +10,15 @@ import { USER } from '../../../mocks/mock-user';
 })
 export class HeaderComponent implements OnInit {
   public userName: string = USER.firstName;
+  @Input() isAuth: boolean;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  public isAuth():boolean {
-    return this.authService.isAuth()
-  }
-
   public logout():void {
-    const userName = this.authService.getUserInfo();
     this.authService.logout();
-    console.log(userName);
+    console.log(this.userName);
   }
 }

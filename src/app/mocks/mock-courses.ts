@@ -13,7 +13,7 @@ export const COURSES: ICourse[] = [
     title: 'rgnx: From Zero To Hero',
     creation: new Date(2022, 2, 1),
     duration: 97,
-    description: `This course will not only teach you to program using AngularJS but also how to think in Angular JS
+    description: `other description. This course will not only teach you to program using AngularJS but also how to think in Angular JS
     and how to architect, design and test a modern web application.`,
     topRated: false,
   },

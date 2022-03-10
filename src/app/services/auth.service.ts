@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   logout():void {
-    return window.localStorage.removeItem('user')
+    window.localStorage.removeItem('user')
   }
 
   isAuth():boolean {
