@@ -6,10 +6,14 @@ import { ICourse } from '../models/course/course.model';
 })
 export class OrderByPipe implements PipeTransform {
   transform(array: any[], field: string): ICourse[] {
-    if (field && field in array[0]) {
-      return array.sort((a, b) =>
-        a[field] > b[field] ? 1 : b[field] > a[field] ? -1 : 0
-      );
+    if (array.length) {
+      if (field && field in array[0]) {
+        return array.sort((a, b) =>
+          a[field] > b[field] ? 1 : b[field] > a[field] ? -1 : 0
+        );
+      } else {
+        return array;
+      }
     } else {
       return array;
     }
