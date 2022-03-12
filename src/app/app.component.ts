@@ -1,5 +1,5 @@
 import { Component, DoCheck, OnChanges, OnInit } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,16 +7,13 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.sass'],
   providers: [AuthService]
 })
-export class AppComponent implements OnInit, DoCheck {
+export class AppComponent implements DoCheck {
   title = 'angular-run';
   public isAuth: boolean = this.authService.isAuth();
 
   constructor(
     private authService: AuthService,
     ) {}
-
-  ngOnInit(): void {
-  }
 
   ngDoCheck() {
     this.isAuth = this.authService.isAuth()

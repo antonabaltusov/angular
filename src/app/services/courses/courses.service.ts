@@ -26,30 +26,26 @@ export class CoursesService{
     return Promise.resolve(course);
   }
 
-  getCourseById(id: number):Promise<ICourse> {
-    const course = this.courses.find(course => course.id == id);
-    if(course) {
-      return Promise.resolve(course);
-    } else {
-      return Promise.reject('not found');
-    }
+  getCourseById(id: number):ICourse|undefined {
+    return this.courses.find(course => course.id == id);
   }
 
-  updateCourse(editCourse: ICourse):Promise<ICourse> {
+  updateCourse(editCourse: ICourse):ICourse {
     const index = this.courses.findIndex(course => course.id == editCourse.id);
     if(index<0) {
-      return Promise.reject('not found');
+      return this.courses[index];
     }
-    this.courses[index] = editCourse;
-    return Promise.resolve(editCourse);
+    this.courses[index] = {...this.courses[index], ...editCourse};
+    return this.courses[index];
   }
 
-  removeCourse(id: number):Promise<boolean> {
+  removeCourse(id: number):boolean {
     const index = this.courses.findIndex(course => course.id == id);
     if(index<0) {
-      return Promise.reject('not found');
+      return false;
     }
     this.courses.splice(index, 1);
-    return Promise.resolve(true);
+    console.log(`удален ${id}`)
+    return true;
   }
 }

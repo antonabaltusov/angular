@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { USER } from '../../../mocks/mock-user';
 
 @Component({

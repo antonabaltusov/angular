@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { USER } from 'src/app/mocks/mock-user';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 import { HeaderComponent } from './header.component';
 

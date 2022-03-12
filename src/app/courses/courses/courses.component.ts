@@ -1,7 +1,5 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { COURSES } from 'src/app/mocks/mock-courses';
-import { AuthService } from 'src/app/services/auth.service';
-import { CoursesService } from 'src/app/services/courses.service';
+import { CoursesService } from '../../services/courses/courses.service';
 import { ICourse } from 'src/app/shared/models/course/course.model';
 import { SearchByTitlePipe } from 'src/app/shared/pipes/search-by-title.pipe';
 
@@ -26,7 +24,7 @@ export class CoursesComponent implements OnInit {
   }
 
   public search(): void{
-    this.courses = this.searchByTitle.transform(this.coursesData, this.inputValue)
+    this.courses = this.searchByTitle.transform(this.coursesData, this.inputValue);
   }
 
   public  async delete(id: number): Promise<void> {

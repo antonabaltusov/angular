@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CoreModule } from 'src/app/core/core.module';
 import { COURSES } from 'src/app/mocks/mock-courses';
-import { CoursesService } from 'src/app/services/courses.service';
+import { CoursesService } from '../../services/courses/courses.service';
 import { SearchByTitlePipe } from 'src/app/shared/pipes/search-by-title.pipe';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CoursesComponent } from './courses.component';
@@ -38,7 +38,7 @@ describe('CoursesComponent', () => {
 
   beforeEach(() => {
     fakeCoursesService.getList.and.callFake(() => COURSES);
-    fakeCoursesService.removeCourse.and.callFake((id: number) => console.log(`удален ${id}`))
+    fakeCoursesService.removeCourse.and.callFake((id: number) => true)
     fixture = TestBed.createComponent(CoursesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -87,6 +87,13 @@ describe('CoursesComponent', () => {
     const event = spyOn(window, 'confirm');
     component.delete(1);
     expect(event).toHaveBeenCalledWith("Do you really want to delete this course");
+  });
+
+  it("should call coursesService.removeCourse and update list", () => {
+    spyOn(window, 'confirm').and.callFake(() => true);
+    component.delete(1);
+    expect(fakeCoursesService.removeCourse).toHaveBeenCalledWith(1);
+    expect(fakeCoursesService.getList).toHaveBeenCalled();
   });
 
   it("should change value of inputValue when change inpue value", () => {
