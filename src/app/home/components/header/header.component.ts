@@ -6,18 +6,17 @@ import { USER } from '../../../mocks/mock-user';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass'],
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class HeaderComponent implements OnInit {
   public userName: string = USER.firstName;
   @Input() isAuth: boolean;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  public logout():void {
+  public logout(): void {
     this.authService.logout();
     console.log(this.userName);
   }

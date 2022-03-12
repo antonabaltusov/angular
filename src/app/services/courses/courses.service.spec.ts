@@ -17,12 +17,12 @@ describe('CoursesService', () => {
   });
 
   it('should return array of courses', () => {
-    const result = service.getList()
-    expect(result).toBe(COURSES)
+    const result = service.getList();
+    expect(result).toBe(COURSES);
   });
 
   it('should push course to array of courses', () => {
-    let length = COURSES.length
+    let length = COURSES.length;
     let course = {
       title: 't',
       creation: new Date(),
@@ -31,16 +31,16 @@ describe('CoursesService', () => {
     };
     service.createCourse(course);
     //const result = service.getCourseById(length)
-    expect(COURSES.length).toBe(length+1)
+    expect(COURSES.length).toBe(length + 1);
   });
 
   it('should return course', () => {
-    const result = service.getCourseById(0)
+    const result = service.getCourseById(0);
     expect(result?.id).toBe(0);
   });
 
   it('should return underfined', () => {
-    const result = service.getCourseById(-1)
+    const result = service.getCourseById(-1);
     expect(result).toBeUndefined();
   });
 

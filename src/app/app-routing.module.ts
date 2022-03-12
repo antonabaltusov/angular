@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoursesComponent } from './courses/courses/courses.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "courses", pathMatch: "full" },
+  { path: '', redirectTo: 'courses', pathMatch: 'full' },
   {
-    path: "courses",
+    path: 'courses',
     component: CoursesComponent,
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,12 +1,16 @@
-<header [ngClass]="{'background-white': isAuth}">
+<header [ngClass]="{ 'background-white': isAuth }">
   <div class="container header">
-    <img src="assets/images/logos/angular/logo-nav@2x.png" width="75" height="20" title="logo" alt="logo" class="logo">
+    <img
+      src="assets/images/logos/angular/logo-nav@2x.png"
+      width="75"
+      height="20"
+      title="logo"
+      alt="logo"
+      class="logo"
+    />
     <div *ngIf="isAuth" class="user">
-      <p>{{userName}}</p>
+      <p>{{ userName }}</p>
       <button (click)="logout()" class="log-off">Log off</button>
     </div>
   </div>
 </header>
-
-
-

@@ -12,13 +12,9 @@ describe('CoursesItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CoreModule,
-        SharedModule,
-      ],
-      declarations: [ CoursesItemComponent ]
-    })
-    .compileComponents();
+      imports: [CoreModule, SharedModule],
+      declarations: [CoursesItemComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -33,24 +29,24 @@ describe('CoursesItemComponent', () => {
   });
 
   it("should call metod 'delete', by click bytton", () => {
-    const event = spyOn(component, "delete");
-    const button = fixture.debugElement.query(By.css(".delete"));
+    const event = spyOn(component, 'delete');
+    const button = fixture.debugElement.query(By.css('.delete'));
     button.nativeElement.click();
 
     expect(event).toHaveBeenCalled();
   });
 
-  it("should emit event with courses id", () => {
-    const event = spyOn(component.onDelete, "emit");
+  it('should emit event with courses id', () => {
+    const event = spyOn(component.onDelete, 'emit');
     component.delete();
 
     expect(event).toHaveBeenCalledWith(component.course.id);
   });
 
-  it("should change value of element when chenge value Input", () => {
+  it('should change value of element when chenge value Input', () => {
     component.course = COURSES[1];
     fixture.detectChanges();
-    const p = fixture.debugElement.query(By.css(".info-description"));
+    const p = fixture.debugElement.query(By.css('.info-description'));
 
     expect(p.nativeElement.innerHTML).toContain(COURSES[1].description);
   });

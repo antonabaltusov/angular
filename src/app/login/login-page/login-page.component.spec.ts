@@ -10,29 +10,22 @@ describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
 
-  const fakeAuthService = jasmine.createSpyObj("fakeAuth", ["login"]);
+  const fakeAuthService = jasmine.createSpyObj('fakeAuth', ['login']);
 
   beforeEach(async () => {
     TestBed.overrideComponent(LoginPageComponent, {
       set: {
-          providers: [
-            { provide: AuthService, useValue: fakeAuthService }
-          ]
-        }
-      }
-    );
+        providers: [{ provide: AuthService, useValue: fakeAuthService }],
+      },
+    });
     await TestBed.configureTestingModule({
-      imports: [
-        CoreModule,
-        SharedModule,
-      ],
-      declarations: [ LoginPageComponent ]
-    })
-    .compileComponents();
+      imports: [CoreModule, SharedModule],
+      declarations: [LoginPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fakeAuthService.login.and.callFake(() => {})
+    fakeAuthService.login.and.callFake(() => {});
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -47,11 +40,11 @@ describe('LoginPageComponent', () => {
     component.password = 'password';
     component.login();
     expect(fakeAuthService.login).toHaveBeenCalledWith('email', 'password');
-  })
+  });
 
   it("should call metod 'login', by click button", () => {
-    const event = spyOn(component, "login");
-    const button = fixture.debugElement.query(By.css(".login-button"));
+    const event = spyOn(component, 'login');
+    const button = fixture.debugElement.query(By.css('.login-button'));
     button.nativeElement.click();
     expect(event).toHaveBeenCalled();
   });

@@ -8,30 +8,23 @@ describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
-  const fakeAuthService = jasmine.createSpyObj("fakeAuth", ["isAuth"]);
+  const fakeAuthService = jasmine.createSpyObj('fakeAuth', ['isAuth']);
 
   beforeEach(async () => {
     TestBed.overrideComponent(AppComponent, {
       set: {
-          providers: [
-            { provide: AuthService, useValue: fakeAuthService }
-          ]
-        }
-      }
-    );
+        providers: [{ provide: AuthService, useValue: fakeAuthService }],
+      },
+    });
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fakeAuthService.isAuth.and.callFake(() => true)
+    fakeAuthService.isAuth.and.callFake(() => true);
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

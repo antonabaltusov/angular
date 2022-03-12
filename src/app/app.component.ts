@@ -5,17 +5,15 @@ import { AuthService } from './services/auth/auth.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.sass'],
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class AppComponent implements DoCheck {
   title = 'angular-run';
   public isAuth: boolean = this.authService.isAuth();
 
-  constructor(
-    private authService: AuthService,
-    ) {}
+  constructor(private authService: AuthService) {}
 
   ngDoCheck() {
-    this.isAuth = this.authService.isAuth()
+    this.isAuth = this.authService.isAuth();
   }
 }

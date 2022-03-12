@@ -3,29 +3,28 @@ import { Injectable } from '@angular/core';
 import { USER } from '../../mocks/mock-user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  constructor() { }
+  constructor() {}
 
-  login(email: string, password: string):void {
-    window.localStorage.setItem('user',USER.firstName)
-    // this.userTocen = new Token(1,1,1,1,'user');
+  login(email: string, password: string): void {
+    window.localStorage.setItem('user', USER.firstName);
   }
 
-  logout():void {
-    window.localStorage.removeItem('user')
+  logout(): void {
+    window.localStorage.removeItem('user');
   }
 
-  isAuth():boolean {
+  isAuth(): boolean {
     if (window.localStorage.getItem('user')) {
       return true;
-    }else {
+    } else {
       return false;
     }
   }
 
-  getUserInfo():string|null {
-    return window.localStorage.getItem('user')
+  getUserInfo(): string | null {
+    return window.localStorage.getItem('user');
   }
 }

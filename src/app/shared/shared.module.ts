@@ -6,23 +6,9 @@ import { OrderByPipe } from './pipes/order-by.pipe';
 import { SearchByTitlePipe } from './pipes/search-by-title.pipe';
 import { CoreModule } from '../core/core.module';
 
-
-
 @NgModule({
-  declarations: [
-    BgCardDirective,
-    DurationPipe,
-    OrderByPipe,
-    SearchByTitlePipe,
-  ],
-  imports: [
-    CoreModule,
-  ],
-  exports: [
-    BgCardDirective,
-    DurationPipe,
-    OrderByPipe,
-    SearchByTitlePipe,
-  ]
+  declarations: [BgCardDirective, DurationPipe, OrderByPipe, SearchByTitlePipe],
+  imports: [CoreModule],
+  exports: [BgCardDirective, DurationPipe, OrderByPipe, SearchByTitlePipe],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -5,16 +5,16 @@ import { AuthService } from '../../services/auth/auth.service';
   selector: 'login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.sass'],
-  providers: [AuthService]
+  providers: [AuthService],
 })
 export class LoginPageComponent {
   public inputEmail: string = '';
   public password: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
-  public login():void {
-    if(this.inputEmail&&this.password) {
+  public login(): void {
+    if (this.inputEmail && this.password) {
       this.authService.login(this.inputEmail, this.password);
     }
   }

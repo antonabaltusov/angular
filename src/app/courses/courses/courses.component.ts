@@ -7,7 +7,7 @@ import { SearchByTitlePipe } from 'src/app/shared/pipes/search-by-title.pipe';
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.sass'],
-  providers: [ SearchByTitlePipe, CoursesService]
+  providers: [SearchByTitlePipe, CoursesService],
 })
 export class CoursesComponent implements OnInit {
   public coursesData: ICourse[] = this.coursesService.getList();
@@ -17,20 +17,22 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private searchByTitle: SearchByTitlePipe,
-    private coursesService: CoursesService,
-    ) {}
+    private coursesService: CoursesService
+  ) {}
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> {}
+
+  public search(): void {
+    this.courses = this.searchByTitle.transform(
+      this.coursesData,
+      this.inputValue
+    );
   }
 
-  public search(): void{
-    this.courses = this.searchByTitle.transform(this.coursesData, this.inputValue);
-  }
-
-  public  async delete(id: number): Promise<void> {
-    if(confirm("Do you really want to delete this course")){
-      if(await this.coursesService.removeCourse(id)) {
-        this.coursesData =  await this.coursesService.getList();
+  public async delete(id: number): Promise<void> {
+    if (confirm('Do you really want to delete this course')) {
+      if (await this.coursesService.removeCourse(id)) {
+        this.coursesData = await this.coursesService.getList();
         this.search();
       }
     }
@@ -39,7 +41,4 @@ export class CoursesComponent implements OnInit {
   public loadMore(): void {
     console.log('loadMore');
   }
-  // async isAuth():Promise<boolean> {
-  //   return await this.authService.isAuth()
-  // }
 }
