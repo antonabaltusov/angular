@@ -1,0 +1,65 @@
+<div class="edit-overlay"></div>
+<div class="edit">
+  <div class="edit-head">
+    <p *ngIf="editCourse; else elseBlock">Edit Course</p>
+    <ng-template #elseBlock><p>Add Course</p></ng-template>
+    <i (click)="cancel()" class="fa-regular fa-rectangle-xmark"></i>
+  </div>
+  <div class="form">
+    <div class="form-input">
+      <label for="titleInput" class="label required">Title</label>
+      <input
+        required
+        class="input"
+        name="title"
+        id="titleInput"
+        placeholder="Enter a name of course"
+        [(ngModel)]="title"
+      />
+    </div>
+    <div class="form-input">
+      <label for="titleInput" class="label required">Description</label>
+      <textarea
+        rows="8"
+        required
+        class="input"
+        name="title"
+        id="titleInput"
+        placeholder="Please enter more detail about course"
+        [(ngModel)]="decription"
+      ></textarea>
+    </div>
+    <div class="date-block">
+      <div class="form-input date-input">
+        <label for="titleInput" class="label required">Date</label>
+        <input
+          required
+          class="input"
+          name="title"
+          id="titleInput"
+          placeholder="Date"
+          [(ngModel)]="creation"
+        />
+      </div>
+      <div class="form-input date-input">
+        <label for="titleInput" class="label required">Duration</label>
+        <div class="duration">
+          <input
+            required
+            type="number"
+            class="input"
+            name="title"
+            id="titleInput"
+            placeholder="Input in minutes"
+            [(ngModel)]="duration"
+          />
+          <p>{{ duration | duration }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button class="cancel" (click)="cancel()">Cancel</button>
+      <button class="save" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
