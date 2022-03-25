@@ -1,4 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
+import { BreadcrumbService } from 'xng-breadcrumb';
 import { CoursesService } from '../../services/courses/courses.service';
 import { ICourse } from '../../shared/models/course/course.model';
 import { SearchByTitlePipe } from '../../shared/pipes/search-by-title.pipe';
@@ -14,38 +16,22 @@ export class CoursesComponent implements OnInit {
   public sortBy: string = 'creation';
   public courses: ICourse[] = this.coursesData;
   public inputValue: string = '';
-  public editCourse: ICourse | null;
-  public openEdit: boolean = true;
 
   constructor(
     private searchByTitle: SearchByTitlePipe,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private breadcrumbService: BreadcrumbService
   ) {}
 
-  async ngOnInit(): Promise<void> {}
+  async ngOnInit(): Promise<void> {
+    this.breadcrumbService.set('@Courses', 'Courses');
+  }
 
   public search(): void {
     this.courses = this.searchByTitle.transform(
       this.coursesData,
       this.inputValue
     );
-  }
-
-  public createCourse(): void {
-    this.openEdit = true;
-  }
-
-  public edit(id: number): void {
-    const course = this.coursesData.find((item) => item.id == id);
-    if (course) {
-      this.editCourse = course;
-      this.openEdit = true;
-    }
-  }
-
-  public closeEdit(boolean: boolean): void {
-    this.openEdit = false;
-    this.editCourse = null;
   }
 
   public async delete(id: number): Promise<void> {

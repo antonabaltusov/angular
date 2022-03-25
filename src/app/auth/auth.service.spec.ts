@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { USER } from '../../mocks/mock-user';
+import { USER } from '../mocks/mock-user';
 
 import { AuthService } from './auth.service';
 

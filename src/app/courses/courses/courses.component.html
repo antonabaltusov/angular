@@ -1,9 +1,5 @@
-<app-course-add-edit
-  [editCourse]="editCourse"
-  *ngIf="openEdit"
-  (onCancel)="closeEdit($event)"
-></app-course-add-edit>
 <div class="courses">
+  <router-outlet></router-outlet>
   <div class="container">
     <h1>Find or add angular courses</h1>
     <div class="setting container">
@@ -27,7 +23,11 @@
         />
         <button class="search_button" (click)="search()">Search</button>
       </div>
-      <button class="add-course" (click)="createCourse()">
+      <button
+        class="add-course"
+        [routerLink]="['./new']"
+        [routerLinkActive]="'active'"
+      >
         <svg
           class="add-course_svg"
           xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,6 @@
 <div class="courses-list">
   <app-courses-item
     (onDelete)="delete($event)"
-    (onEdit)="edit($event)"
     *ngFor="let course of courses | orderBy: sortBy"
     [course]="course"
   ></app-courses-item>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from '../../../services/auth/auth.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
 import { USER } from '../../../mocks/mock-user';
 
 @Component({
@@ -10,14 +11,15 @@ import { USER } from '../../../mocks/mock-user';
 })
 export class HeaderComponent implements OnInit {
   public userName: string = USER.firstName;
-  @Input() isAuth: boolean;
+  public isAuth: boolean = this.authService.isAuth();
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   public logout(): void {
-    this.authService.logout();
-    console.log(this.userName);
+    if (this.authService.logout()) {
+      this.router.navigate(['login']);
+    }
   }
 }

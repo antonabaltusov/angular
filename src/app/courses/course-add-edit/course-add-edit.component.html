@@ -1,8 +1,8 @@
 <div class="edit-overlay"></div>
 <div class="edit">
   <div class="edit-head">
-    <p *ngIf="editCourse; else elseBlock">Edit Course</p>
-    <ng-template #elseBlock><p>Add Course</p></ng-template>
+    <xng-breadcrumb class="edit-breadcrumb"></xng-breadcrumb>
+    <p>{{ nameBlock }}</p>
     <i (click)="cancel()" class="fa-regular fa-rectangle-xmark"></i>
   </div>
   <div class="form">

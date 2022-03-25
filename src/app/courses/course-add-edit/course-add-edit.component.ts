@@ -1,6 +1,9 @@
-import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CourseClass } from '../../shared/models/course/course';
+import { CoursesService } from '../../services/courses/courses.service';
 import { ICourse } from '../../shared/models/course/course.model';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-course-add-edit',
@@ -8,30 +11,62 @@ import { ICourse } from '../../shared/models/course/course.model';
   styleUrls: ['./course-add-edit.component.sass'],
 })
 export class CourseAddEditComponent implements OnInit {
-  @Input() editCourse: ICourse | null;
   @Output() onCancel: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onSave: EventEmitter<ICourse> = new EventEmitter<ICourse>();
-  public title: string;
-  public decription: string;
+  public nameBlock = 'Add Cousre';
+  public id: number;
+  public title: string = '';
+  public decription: string = '';
   public creation: Date;
   public duration: number;
-  constructor(private datePipe: DatePipe) {}
+  constructor(
+    private coursesService: CoursesService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private breadcrumbService: BreadcrumbService
+  ) {}
+
+  ngOnInit() {
+    this.route.params.subscribe((routeParams) => {
+      if (routeParams['id']) {
+        this.breadcrumbService.set('@course', `course №${routeParams['id']}`);
+        const id = routeParams['id'];
+        console.log(id);
+        const course = this.coursesService.getCourseById(id);
+        if (course) {
+          this.id = course.id || 0;
+          this.nameBlock = 'Edit Course';
+          this.title = course.title;
+          this.duration = course.duration;
+          this.decription = course.description;
+          this.creation = course.creation;
+        } else {
+          this.router.navigateByUrl('courses');
+        }
+      }
+    });
+  }
 
   public cancel(): void {
-    this.onCancel.emit(true);
+    this.router.navigateByUrl('courses');
   }
 
-  public save(): void {
-    console.log(this.title, this.decription, this.creation, this.duration);
-  }
-  ngOnInit(): void {
-    if (this.editCourse) {
-      console.log(this.editCourse);
-      this.title = this.editCourse.title || '';
-      this.duration = this.editCourse.duration;
-      this.decription = this.editCourse.description || '';
-      this.creation = this.editCourse.creation || new Date();
+  public async save(): Promise<void> {
+    const course = new CourseClass(
+      this.title,
+      this.creation,
+      this.duration,
+      this.decription,
+      this.id
+    );
+    if (this.id) {
+      if (await this.coursesService.updateCourse(course)) {
+        this.router.navigateByUrl('courses');
+      }
+    } else {
+      if (await this.coursesService.createCourse(course)) {
+        this.router.navigateByUrl('courses');
+      }
     }
-    console.log(this.title, this.decription, this.creation, this.duration);
   }
 }

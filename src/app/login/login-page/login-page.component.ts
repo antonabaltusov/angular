@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'login-page',
@@ -11,11 +12,13 @@ export class LoginPageComponent {
   public inputEmail: string = '';
   public password: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   public login(): void {
     if (this.inputEmail && this.password) {
-      this.authService.login(this.inputEmail, this.password);
+      if (this.authService.login(this.inputEmail, this.password)) {
+        this.router.navigate(['courses']);
+      }
     }
   }
 }
