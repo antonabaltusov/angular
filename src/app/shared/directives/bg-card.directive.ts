@@ -4,12 +4,12 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
   selector: '[appBgCard]',
 })
 export class BgCardDirective {
-  @Input('appBgCard') date: Date;
+  @Input('appBgCard') date: string;
 
   constructor(private element: ElementRef) {}
 
   ngOnInit(): void {
-    this.highlight(this.getColor(this.date));
+    this.highlight(this.getColor(new Date(this.date)));
   }
 
   private getColor(creationDate: Date) {

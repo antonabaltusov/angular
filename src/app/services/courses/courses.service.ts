@@ -1,52 +1,51 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { COURSES } from '../../mocks/mock-courses';
+import { Observable, tap } from 'rxjs';
 import { ICourse } from '../../shared/models/course/course.model';
+
+interface IAnswerGetCourses {
+  courses: ICourse[];
+  length: number;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesService {
-  private courses: ICourse[] = COURSES;
+  private url = 'http://localhost:3004/courses';
+  private coust = 10;
+  private courses: ICourse[];
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  getList(): ICourse[] {
-    return this.courses;
+  getList(
+    start?: number,
+    textFragment?: string,
+    count?: number
+  ): Observable<IAnswerGetCourses> {
+    console.log(`${textFragment ? `&text_fragment=${textFragment}` : ''}`);
+
+    return this.http
+      .get<IAnswerGetCourses>(
+        `${this.url}?start=${start || 0}&count=${count || this.coust}${
+          textFragment ? `&textFragment=${textFragment.toLowerCase()}` : ''
+        }`
+      )
+      .pipe(tap((data) => (this.courses = data.courses)));
   }
-  createCourse(course: ICourse): Promise<ICourse> {
-    let result;
-    let id = -1;
-    do {
-      id++;
-      result = this.courses.some((course) => course.id == id);
-    } while (result);
-    course.id = id;
-    this.courses.push(course);
-    return Promise.resolve(course);
+  createCourse(course: ICourse): Observable<ICourse> {
+    return this.http.post<ICourse>(this.url, course);
   }
 
   getCourseById(id: number): ICourse | undefined {
     return this.courses.find((course) => course.id == id);
   }
 
-  updateCourse(editCourse: ICourse): ICourse {
-    const index = this.courses.findIndex(
-      (course) => course.id == editCourse.id
-    );
-    if (index < 0) {
-      return this.courses[index];
-    }
-    this.courses[index] = { ...this.courses[index], ...editCourse };
-    return this.courses[index];
+  updateCourse(editCourse: ICourse): Observable<ICourse> {
+    return this.http.put<ICourse>(`${this.url}/${editCourse.id}`, editCourse);
   }
 
-  removeCourse(id: number): boolean {
-    const index = this.courses.findIndex((course) => course.id == id);
-    if (index < 0) {
-      return false;
-    }
-    this.courses.splice(index, 1);
-    console.log(`удален ${id}`);
-    return true;
+  removeCourse(id: number): Observable<object> {
+    return this.http.delete(`${this.url}/${id}`);
   }
 }

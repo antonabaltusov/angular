@@ -1,49 +1,74 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CoursesService } from '../../services/courses/courses.service';
 import { ICourse } from '../../shared/models/course/course.model';
-import { SearchByTitlePipe } from '../../shared/pipes/search-by-title.pipe';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.sass'],
-  providers: [SearchByTitlePipe, CoursesService],
+  providers: [CoursesService],
 })
 export class CoursesComponent implements OnInit {
-  public coursesData: ICourse[] = this.coursesService.getList();
-  public sortBy: string = 'creation';
-  public courses: ICourse[] = this.coursesData;
-  public inputValue: string = '';
+  public sortBy: string = 'date';
+  public courses: ICourse[];
+  public inputSearch: string = '';
+  public lenghtBD: number = 0;
 
   constructor(
-    private searchByTitle: SearchByTitlePipe,
     private coursesService: CoursesService,
-    private breadcrumbService: BreadcrumbService
-  ) {}
+    private breadcrumbService: BreadcrumbService,
+    private route: ActivatedRoute
+  ) {
+    console.log(this.route);
+  }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.route.params.subscribe(() => {
+      this.getList(this.inputSearch);
+    });
     this.breadcrumbService.set('@Courses', 'Courses');
   }
 
-  public search(): void {
-    this.courses = this.searchByTitle.transform(
-      this.coursesData,
-      this.inputValue
-    );
+  private getList(search?: string) {
+    this.coursesService.getList(0, search).subscribe((data) => {
+      this.lenghtBD = data.length;
+      this.courses = data.courses;
+    });
   }
 
-  public async delete(id: number): Promise<void> {
-    if (confirm('Do you really want to delete this course')) {
-      if (await this.coursesService.removeCourse(id)) {
-        this.coursesData = await this.coursesService.getList();
-        this.search();
-      }
+  public search(): void {
+    this.getList(this.inputSearch);
+  }
+
+  public update(boolean: any) {
+    console.log(boolean);
+
+    if (boolean) {
+      this.coursesService
+        .getList(0, this.inputSearch, this.courses.length)
+        .subscribe((data) => {
+          this.lenghtBD = data.length;
+          this.courses = data.courses;
+        });
     }
   }
 
-  public loadMore(): void {
-    console.log('loadMore');
+  public delete(id: number) {
+    if (confirm('Do you really want to delete this course')) {
+      this.coursesService.removeCourse(id).subscribe(() => {
+        this.update(true);
+      });
+    }
+  }
+
+  public loadMore() {
+    this.coursesService
+      .getList(this.courses.length, this.inputSearch)
+      .subscribe((data) => {
+        this.lenghtBD = data.length;
+        this.courses.push(...data.courses);
+      });
   }
 }

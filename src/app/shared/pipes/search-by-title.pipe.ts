@@ -9,7 +9,7 @@ export class SearchByTitlePipe implements PipeTransform {
     if (value) {
       const lowerValue = value.toLocaleLowerCase();
       return courses.filter((course) =>
-        course.title.toLocaleLowerCase().includes(lowerValue)
+        course.name.toLocaleLowerCase().includes(lowerValue)
       );
     } else {
       return courses;

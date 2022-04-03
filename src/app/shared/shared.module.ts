@@ -7,6 +7,8 @@ import { SearchByTitlePipe } from './pipes/search-by-title.pipe';
 import { CoreModule } from '../core/core.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,13 @@ import { HeaderComponent } from './components/header/header.component';
     SearchByTitlePipe,
     NotFoundComponent,
     HeaderComponent,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
 })
 export class SharedModule {}

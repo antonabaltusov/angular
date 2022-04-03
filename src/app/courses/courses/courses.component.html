@@ -1,5 +1,5 @@
 <div class="courses">
-  <router-outlet></router-outlet>
+  <router-outlet (deactivate)="update($event)"></router-outlet>
   <div class="container">
     <h1>Find or add angular courses</h1>
     <div class="setting container">
@@ -19,7 +19,7 @@
         <input
           class="search_input"
           placeholder="Search by name, description or date"
-          [(ngModel)]="inputValue"
+          [(ngModel)]="inputSearch"
         />
         <button class="search_button" (click)="search()">Search</button>
       </div>
@@ -54,20 +54,18 @@
     </div>
   </div>
 </div>
-<div class="courses-list">
+<div class="courses-list" *ngIf="courses">
   <app-courses-item
     (onDelete)="delete($event)"
     *ngFor="let course of courses | orderBy: sortBy"
     [course]="course"
   ></app-courses-item>
   <button
-    *ngIf="courses.length"
+    *ngIf="courses.length != lenghtBD"
     class="container load-more"
     (click)="loadMore()"
   >
     Load more
   </button>
-  <p class="empty-list" *ngIf="!courses.length">
-    NO DATA. FEEL FREE TO ADD NEW COURSE
-  </p>
 </div>
+<p class="empty-list" *ngIf="!courses">NO DATA. FEEL FREE TO ADD NEW COURSE</p>

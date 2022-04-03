@@ -14,7 +14,7 @@
         name="title"
         id="titleInput"
         placeholder="Enter a name of course"
-        [(ngModel)]="title"
+        [(ngModel)]="course.name"
       />
     </div>
     <div class="form-input">
@@ -26,7 +26,7 @@
         name="title"
         id="titleInput"
         placeholder="Please enter more detail about course"
-        [(ngModel)]="decription"
+        [(ngModel)]="course.description"
       ></textarea>
     </div>
     <div class="date-block">
@@ -38,7 +38,7 @@
           name="title"
           id="titleInput"
           placeholder="Date"
-          [(ngModel)]="creation"
+          [(ngModel)]="course.date"
         />
       </div>
       <div class="form-input date-input">
@@ -51,9 +51,9 @@
             name="title"
             id="titleInput"
             placeholder="Input in minutes"
-            [(ngModel)]="duration"
+            [(ngModel)]="course.length"
           />
-          <p>{{ duration | duration }}</p>
+          <p>{{ course.length | duration }}</p>
         </div>
       </div>
     </div>

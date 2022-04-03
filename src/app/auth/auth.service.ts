@@ -1,32 +1,40 @@
-import { Token } from '@angular/compiler';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { USER } from '../mocks/mock-user';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { IUser } from '../shared/models/user/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor() {}
+  private url = 'http://localhost:3004/auth';
 
-  login(email: string, password: string): boolean {
-    window.localStorage.setItem('user', USER.firstName);
-    return this.isAuth();
+  constructor(private http: HttpClient, private router: Router) {}
+
+  login(email: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.url}/login`, {
+        login: email,
+        password: password,
+      })
+      .pipe(tap((data) => window.localStorage.setItem('token', data.token)));
   }
 
   logout(): boolean {
-    window.localStorage.removeItem('user');
+    window.localStorage.removeItem('token');
     return !this.isAuth();
   }
 
   isAuth(): boolean {
-    if (window.localStorage.getItem('user')) {
+    if (window.localStorage.getItem('token')) {
       return true;
     } else {
       return false;
     }
   }
 
-  getUserInfo(): string | null {
-    return window.localStorage.getItem('user');
+  getUserInfo(): Observable<IUser> {
+    return this.http.get<IUser>(`${this.url}/userinfo`);
   }
 }

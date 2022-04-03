@@ -14,11 +14,11 @@ export class LoginPageComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  public login(): void {
+  public async login(): Promise<void> {
     if (this.inputEmail && this.password) {
-      if (this.authService.login(this.inputEmail, this.password)) {
+      this.authService.login(this.inputEmail, this.password).subscribe(() => {
         this.router.navigate(['courses']);
-      }
+      });
     }
   }
 }

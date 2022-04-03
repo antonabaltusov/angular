@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { BreadcrumbModule, BreadcrumbService } from 'xng-breadcrumb';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { BreadcrumbModule, BreadcrumbService } from 'xng-breadcrumb';
     CoursesModule,
     SharedModule,
     BrowserModule,
+    HttpClientModule,
     BreadcrumbModule,
   ],
   providers: [BreadcrumbService],

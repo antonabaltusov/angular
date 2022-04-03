@@ -1,8 +1,11 @@
+import { IUser } from '../user/user.model';
+
 export interface ICourse {
   id?: number;
-  title: string;
-  creation: Date;
-  duration: number;
+  name: string;
+  date: string;
+  length: number;
   description: string;
-  topRated?: boolean;
+  isTopRated?: boolean;
+  authors: IUser[];
 }

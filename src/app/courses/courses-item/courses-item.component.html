@@ -1,15 +1,15 @@
 <div
-  [appBgCard]="course.creation"
+  [appBgCard]="course.date"
   class="container courses-item"
   *ngIf="course"
-  [ngClass]="{ 'bg-gold': course.topRated }"
+  [ngClass]="{ 'bg-gold': course.isTopRated }"
 >
   <div class="courses-item_video"></div>
   <div class="courses-item_info">
     <h2 class="info-title">
-      {{ course.title | uppercase }}
+      {{ course.name | uppercase }}
       <svg
-        *ngIf="course.topRated"
+        *ngIf="course.isTopRated"
         xmlns="http://www.w3.org/2000/svg"
         width="19"
         height="19"
@@ -24,11 +24,9 @@
     <p class="info-description">{{ course.description }}</p>
     <div class="courses-item_info-time">
       <p class="info-duration">
-        <span>Duration: </span>{{ course.duration | duration }}
+        <span>Duration: </span>{{ course.length | duration }}
       </p>
-      <p class="info-creation">
-        <span>Date: </span>{{ course.creation | date: "mm.dd.yyyy" }}
-      </p>
+      <p class="info-creation"><span>Date: </span>{{ course.date }}</p>
     </div>
   </div>
   <div class="courses-item_buttons">
