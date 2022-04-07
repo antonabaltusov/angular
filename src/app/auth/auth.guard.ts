@@ -7,7 +7,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -23,11 +23,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.isAuth()) return true;
-
-    const loginPageUrlTree = this.router.parseUrl('/login');
-
-    return loginPageUrlTree;
+    return new Observable<boolean | UrlTree>((observer) => {
+      if (this.authService.isAuth()) {
+        observer.next(true);
+      } else {
+        const loginPageUrlTree = this.router.parseUrl('/login');
+        observer.next(loginPageUrlTree);
+      }
+    });
   }
 
   canActivateChild(

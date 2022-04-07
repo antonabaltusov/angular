@@ -9,6 +9,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { LoadingComponent } from './components/loading/loading.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
     SearchByTitlePipe,
     NotFoundComponent,
     HeaderComponent,
+    LoadingComponent,
   ],
   imports: [CoreModule],
   exports: [
@@ -27,6 +30,7 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
     SearchByTitlePipe,
     NotFoundComponent,
     HeaderComponent,
+    LoadingComponent,
   ],
   providers: [
     {

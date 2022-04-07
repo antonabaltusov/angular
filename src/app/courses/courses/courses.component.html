@@ -20,8 +20,8 @@
           class="search_input"
           placeholder="Search by name, description or date"
           [(ngModel)]="inputSearch"
+          (keyup)="keyUp.next($event)"
         />
-        <button class="search_button" (click)="search()">Search</button>
       </div>
       <button
         class="add-course"
