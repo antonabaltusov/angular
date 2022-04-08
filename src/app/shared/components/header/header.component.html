@@ -8,8 +8,8 @@
       alt="logo"
       class="logo"
     />
-    <div *ngIf="isAuth" class="user">
-      <p>{{ user }}</p>
+    <div *ngIf="isAuth | async" class="user">
+      <p>{{ user | async }}</p>
       <button (click)="logout()" class="log-off">Log off</button>
     </div>
   </div>

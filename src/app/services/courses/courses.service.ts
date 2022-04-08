@@ -37,12 +37,15 @@ export class CoursesService {
       .pipe(
         tap((data) => {
           this.courses = data.courses;
-          //this.loadingService.changeShow(false);
+          this.loadingService.changeShow(false);
         })
       );
   }
   createCourse(course: ICourse): Observable<ICourse> {
-    return this.http.post<ICourse>(this.url, course);
+    this.loadingService.changeShow(true);
+    return this.http
+      .post<ICourse>(this.url, course)
+      .pipe(tap(() => this.loadingService.changeShow(false)));
   }
 
   getCourseById(id: number): ICourse | undefined {
@@ -50,10 +53,16 @@ export class CoursesService {
   }
 
   updateCourse(editCourse: ICourse): Observable<ICourse> {
-    return this.http.put<ICourse>(`${this.url}/${editCourse.id}`, editCourse);
+    this.loadingService.changeShow(true);
+    return this.http
+      .put<ICourse>(`${this.url}/${editCourse.id}`, editCourse)
+      .pipe(tap(() => this.loadingService.changeShow(false)));
   }
 
   removeCourse(id: number): Observable<object> {
-    return this.http.delete(`${this.url}/${id}`);
+    this.loadingService.changeShow(true);
+    return this.http
+      .delete(`${this.url}/${id}`)
+      .pipe(tap(() => this.loadingService.changeShow(false)));
   }
 }

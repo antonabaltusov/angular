@@ -7,7 +7,6 @@ import { AuthService } from '../../auth/auth.service';
   selector: 'login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.sass'],
-  providers: [AuthService],
 })
 export class LoginPageComponent implements OnDestroy {
   public inputEmail: string = '';

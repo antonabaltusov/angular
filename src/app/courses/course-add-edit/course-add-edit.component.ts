@@ -65,12 +65,20 @@ export class CourseAddEditComponent implements OnInit {
           this.router.navigateByUrl('courses');
         });
       } else {
-        this.authService.getUserInfo().subscribe((user) => {
-          this.course.authors.push(user);
-          this.coursesService.createCourse(this.course).subscribe(() => {
-            this.onSave.emit(true);
-            this.router.navigateByUrl('courses');
-          });
+        this.authService.getUserInfo().subscribe({
+          next: (user) => {
+            this.course.authors.push(user);
+            this.coursesService.createCourse(this.course).subscribe({
+              next: () => {
+                this.onSave.emit(true);
+                this.router.navigateByUrl('courses');
+              },
+              error: () => {
+                console.log('error');
+              },
+            });
+          },
+          error: () => console.error('error'),
         });
       }
     }

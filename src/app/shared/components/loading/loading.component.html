@@ -1,4 +1,3 @@
-<div *ngIf="show" class="overlay">
-  <!-- <mat-spinner color="black"></mat-spinner> -->
+<div *ngIf="show | async" class="overlay">
   <div class="loader"></div>
 </div>
