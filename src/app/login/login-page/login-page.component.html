@@ -8,13 +8,23 @@
         cover all topics needed to start your own Angular application.
       </p>
     </div>
-    <div class="login">
+    <form [formGroup]="form" class="login">
       <h2>Login</h2>
       <div class="hr"></div>
-      <input type="email" placeholder="Email" [(ngModel)]="inputEmail" />
-      <input type="password" placeholder="Password" [(ngModel)]="password" />
+      <input type="email" placeholder="Email" formControlName="email" />
+      <input
+        type="password"
+        placeholder="Password"
+        formControlName="password"
+      />
       <label><input type="checkbox" /> Remember me</label>
-      <button class="login-button" (click)="login()">Login</button>
-    </div>
+      <button
+        [disabled]="!form.valid"
+        [ngClass]="{ 'login-button': form.valid, disabled: !form.valid }"
+        (click)="login()"
+      >
+        Login
+      </button>
+    </form>
   </div>
 </div>

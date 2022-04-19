@@ -100,4 +100,10 @@ export class AuthorsComponent implements OnInit, Validator {
     this.showSearch = true;
     event.stopPropagation();
   }
+
+  closeSearch() {
+    this.form.value.length
+      ? (this.showSearch = false)
+      : (this.showSearch = true);
+  }
 }

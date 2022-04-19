@@ -13,6 +13,11 @@ import {
 } from 'rxjs';
 import { IUser } from '../shared/models/user/user.model';
 
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -26,12 +31,12 @@ export class AuthService {
     private router: Router
   ) {}
 
-  login(email: string, password: string): Observable<any> {
+  login(loginForm: LoginForm): Observable<any> {
     this.loadingService.changeShow(true);
     return this.http
       .post<any>(`${this.url}/login`, {
-        login: email,
-        password: password,
+        login: loginForm.email,
+        password: loginForm.password,
       })
       .pipe(
         tap((data) => {

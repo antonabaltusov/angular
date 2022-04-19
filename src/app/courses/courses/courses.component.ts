@@ -19,7 +19,7 @@ import { ICourse } from '../../shared/models/course/course.model';
   styleUrls: ['./courses.component.sass'],
   providers: [CoursesService],
 })
-export class CoursesComponent implements OnInit, OnDestroy {
+export class CoursesComponent implements OnInit {
   public sortBy: string = 'date';
   public courses: ICourse[];
   public inputSearch: string = '';
@@ -59,8 +59,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   public update(boolean: any) {
-    console.log(boolean);
-
     if (boolean) {
       this.coursesService
         .getList(0, this.inputSearch, this.courses.length)
@@ -86,9 +84,5 @@ export class CoursesComponent implements OnInit, OnDestroy {
         this.lenghtBD = data.length;
         this.courses.push(...data.courses);
       });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }
