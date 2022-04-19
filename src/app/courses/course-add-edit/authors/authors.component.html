@@ -1,18 +1,19 @@
-<div (clickOutside)="showSearch = false" class="form-input">
+<div appClickOutside (clickOutside)="showSearch = false" class="form-input">
   <label class="label required" [class.has-error]="form.invalid && form.touched"
     >Authors</label
   >
-  <div (clickOutside)="showSearch = false" *ngIf="!showSearch" class="authors">
+  <div *ngIf="!showSearch" class="authors">
     <div class="authors-item" *ngFor="let author of form.value; let i = index">
       <p>{{ author.firstName }} {{ author.lastName }}</p>
-      <button class="authors-item_button" (click)="removeAuthor(i)">-</button>
+      <button class="authors-item_button" (click)="removeAuthor(i, $event)">
+        -
+      </button>
     </div>
-    <button (clickOutside)="showSearch = false" (click)="showSearch = true">
+    <button class="authors-item_button-plus" (click)="openSearch($event)">
       +
     </button>
   </div>
   <input
-    (clickOutside)="showSearch = false"
     autofocus
     *ngIf="showSearch"
     [class.input_has-error]="form.invalid && form.touched"
@@ -23,7 +24,6 @@
     (blur)="form.markAsTouched()"
   />
   <select
-    (clickOutside)="showSearch = false"
     *ngIf="showSearch"
     class="form-select"
     size="5"

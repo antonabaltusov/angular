@@ -48,7 +48,18 @@
       border: none
       background-color: white
       font-weight: 500
+      transition-property: background-color
+      transition-duration: 300ms
+      &-plus
+        border: none
+        height: 100%
+        transition-property: background-color
+        transition-duration: 300ms
+        &:hover
+          cursor: pointer
+          background-color: green
       &:hover
+        background-color: red
         cursor: pointer
         font-weight: 700
 

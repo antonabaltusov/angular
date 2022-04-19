@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   debounceTime,
@@ -22,6 +23,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   public sortBy: string = 'date';
   public courses: ICourse[];
   public inputSearch: string = '';
+  public inputForm: FormControl;
   public lenghtBD: number = 0;
   public keyUp = new Subject<Event>();
   private subscription: Subscription;
@@ -29,10 +31,11 @@ export class CoursesComponent implements OnInit, OnDestroy {
   constructor(
     private coursesService: CoursesService,
     private breadcrumbService: BreadcrumbService,
-    private route: ActivatedRoute
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.inputForm = this.fb.control('');
     this.getList();
     this.search();
     this.breadcrumbService.set('@Courses', 'Courses');
@@ -46,9 +49,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   public search(): void {
-    this.subscription = this.keyUp
+    this.inputForm.valueChanges
       .pipe(
-        map((event: any) => (<HTMLInputElement>event.target).value),
         filter((data) => data.length > 3 || data.length == 0),
         debounceTime(500),
         distinctUntilChanged()

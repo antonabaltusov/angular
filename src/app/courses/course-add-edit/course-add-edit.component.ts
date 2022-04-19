@@ -111,7 +111,7 @@ export class CourseAddEditComponent implements OnInit {
     const date = this.form.value.date.split('/') as Array<number>;
     const course: ICourse = {
       ...this.form.value,
-      date: new Date(date[2], date[1], date[0]).toISOString(),
+      date: new Date(date[2], date[1] - 1, date[0]).toISOString(),
     };
     if (this.nameBlock == 'Edit Course') {
       this.coursesService

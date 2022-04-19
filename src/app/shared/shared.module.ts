@@ -10,8 +10,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NotFoundComponent,
     HeaderComponent,
     LoadingComponent,
+    ClickOutsideDirective,
   ],
   imports: [CoreModule, ReactiveFormsModule],
   exports: [
@@ -33,6 +34,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     LoadingComponent,
     ReactiveFormsModule,
+    ClickOutsideDirective,
   ],
   providers: [
     {

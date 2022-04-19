@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -36,8 +36,7 @@ export class AuthorsComponent implements OnInit, Validator {
   constructor(
     private rootFormGroup: FormGroupDirective,
     private coursesService: CoursesService,
-    private fb: FormBuilder,
-    private renderer: Renderer2
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +61,6 @@ export class AuthorsComponent implements OnInit, Validator {
   }
 
   private getAuthorsList(data?: string) {
-    console.log(data);
     this.coursesService.getAuthorsList(data).subscribe((data) => {
       this.authors = data;
     });
@@ -89,10 +87,17 @@ export class AuthorsComponent implements OnInit, Validator {
     this.showSearch = false;
   }
 
-  removeAuthor(i: number) {
+  removeAuthor(i: number, event: Event) {
+    event.stopPropagation();
+
     this.form.removeAt(i);
     this.form.value.length
       ? (this.showSearch = false)
       : (this.showSearch = true);
+  }
+
+  openSearch(event: Event) {
+    this.showSearch = true;
+    event.stopPropagation();
   }
 }

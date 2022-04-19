@@ -19,8 +19,7 @@
         <input
           class="search_input"
           placeholder="Search by name, description or date"
-          [(ngModel)]="inputSearch"
-          (keyup)="keyUp.next($event)"
+          [formControl]="inputForm"
         />
       </div>
       <button
