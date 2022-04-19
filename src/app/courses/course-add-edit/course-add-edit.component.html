@@ -39,7 +39,6 @@
     <app-date formControlName="date"></app-date>
     <app-duration formControlName="length"></app-duration>
     <app-authors formArrayName="authors"></app-authors>
-    <p>{{ form.value | json }}</p>
     <div class="form-buttons">
       <button class="cancel" (click)="cancel()">Cancel</button>
       <button
@@ -51,64 +50,5 @@
         Save
       </button>
     </div>
-    <p>form is valid: {{ form.valid ? "true" : "false" }}</p>
   </form>
-
-  <!-- <div class="form">
-    <div class="form-input">
-      <label for="titleInput" class="label required">Title</label>
-      <input
-        required
-        class="input"
-        name="title"
-        id="titleInput"
-        placeholder="Enter a name of course"
-        [(ngModel)]="course.name"
-      />
-    </div>
-    <div class="form-input">
-      <label for="titleInput" class="label required">Description</label>
-      <textarea
-        rows="8"
-        required
-        class="input"
-        name="title"
-        id="titleInput"
-        placeholder="Please enter more detail about course"
-        [(ngModel)]="course.description"
-      ></textarea>
-    </div>
-    <div class="date-block">
-      <div class="form-input date-input">
-        <label for="titleInput" class="label required">Date</label>
-        <input
-          required
-          class="input"
-          name="title"
-          id="titleInput"
-          placeholder="Date"
-          [(ngModel)]="course.date"
-        />
-      </div>
-      <div class="form-input date-input">
-        <label for="titleInput" class="label required">Duration</label>
-        <div class="duration">
-          <input
-            required
-            type="number"
-            class="input"
-            name="title"
-            id="titleInput"
-            placeholder="Input in minutes"
-            [(ngModel)]="course.length"
-          />
-          <p>{{ course.length | duration }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="form-buttons">
-      <button class="cancel" (click)="cancel()">Cancel</button>
-      <button class="save" (click)="save()">Save</button>
-    </div>
-  </div> -->
 </div>

@@ -1,19 +1,40 @@
-<div>
-  <p *ngFor="let author of form.value; let i = index">
-    {{ author.firstName }} {{ author.lastName }}
-    <button (click)="removeAuthor(i)">x</button>
-  </p>
+<div (clickOutside)="showSearch = false" class="form-input">
+  <label class="label required" [class.has-error]="form.invalid && form.touched"
+    >Authors</label
+  >
+  <div (clickOutside)="showSearch = false" *ngIf="!showSearch" class="authors">
+    <div class="authors-item" *ngFor="let author of form.value; let i = index">
+      <p>{{ author.firstName }} {{ author.lastName }}</p>
+      <button class="authors-item_button" (click)="removeAuthor(i)">-</button>
+    </div>
+    <button (clickOutside)="showSearch = false" (click)="showSearch = true">
+      +
+    </button>
+  </div>
+  <input
+    (clickOutside)="showSearch = false"
+    autofocus
+    *ngIf="showSearch"
+    [class.input_has-error]="form.invalid && form.touched"
+    class="input"
+    placeholder="Search by name, description or date"
+    [(ngModel)]="input"
+    (input)="onChange.next($event)"
+    (blur)="form.markAsTouched()"
+  />
+  <select
+    (clickOutside)="showSearch = false"
+    *ngIf="showSearch"
+    class="form-select"
+    size="5"
+    (change)="addAuthor($event)"
+  >
+    <option
+      class="form-option"
+      *ngFor="let author of authors"
+      [value]="author.id"
+    >
+      {{ author.name }}
+    </option>
+  </select>
 </div>
-<input
-  [class.input_has-error]="form.invalid && form.touched"
-  class="search_input"
-  placeholder="Search by name, description or date"
-  [(ngModel)]="input"
-  (input)="onChange.next($event)"
-  (blur)="form.markAsTouched()"
-/>
-<select size="5" (change)="addAuthor($event)">
-  <option *ngFor="let author of authors" [value]="author.id">
-    {{ author.name }}
-  </option>
-</select>

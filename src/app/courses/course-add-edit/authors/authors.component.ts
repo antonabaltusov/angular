@@ -1,18 +1,16 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, Renderer2 } from '@angular/core';
 import {
-  ControlValueAccessor,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroupDirective,
   NG_VALIDATORS,
-  NG_VALUE_ACCESSOR,
   Validator,
-  Validators,
 } from '@angular/forms';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { IAuthor } from '../../../shared/models/user/author.model';
 import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
+import { IUser } from '../../../shared/models/user/user.model';
 
 @Component({
   selector: 'app-authors',
@@ -20,48 +18,33 @@ import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
   styleUrls: ['./authors.component.sass'],
   providers: [
     {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AuthorsComponent),
-      multi: true,
-    },
-    {
       provide: NG_VALIDATORS,
       multi: true,
       useExisting: forwardRef(() => AuthorsComponent),
     },
   ],
 })
-export class AuthorsComponent
-  implements OnInit, Validator, ControlValueAccessor
-{
+export class AuthorsComponent implements OnInit, Validator {
   @Input() formArrayName!: string;
   public authors: IAuthor[];
   public onChange = new Subject<Event>();
   public input: string = '';
+  public showSearch: boolean;
 
   form!: FormArray;
 
   constructor(
     private rootFormGroup: FormGroupDirective,
     private coursesService: CoursesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private renderer: Renderer2
   ) {}
-  writeValue(obj: any): void {
-    //throw new Error('Method not implemented.');
-  }
-  registerOnChange(fn: any): void {
-    //throw new Error('Method not implemented.');
-  }
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  onTouched = () => {};
 
   ngOnInit(): void {
     this.getAuthorsList('');
     this.search();
     this.form = this.rootFormGroup.control.get(this.formArrayName) as FormArray;
+    this.showSearch = !this.form.value.length;
   }
 
   public validate(c: FormControl) {
@@ -97,13 +80,19 @@ export class AuthorsComponent
 
   addAuthor(event: any) {
     const id = event.target.value;
-    const author = this.authors.find((author) => author.id == id);
-    if (author) {
-      this.form.push(this.initAuthor(author));
+    if (!this.form.value.some((author: IUser) => author.id == id)) {
+      const author = this.authors.find((author) => author.id == id);
+      if (author) {
+        this.form.push(this.initAuthor(author));
+      }
     }
+    this.showSearch = false;
   }
 
   removeAuthor(i: number) {
     this.form.removeAt(i);
+    this.form.value.length
+      ? (this.showSearch = false)
+      : (this.showSearch = true);
   }
 }
