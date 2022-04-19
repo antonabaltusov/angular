@@ -1,0 +1,17 @@
+<div class="form-input">
+  <label [class.has-error]="!data && touched" class="label required"
+    >Duration</label
+  >
+  <div class="duration">
+    <input
+      [class.input_has-error]="!data && touched"
+      type="number"
+      class="input"
+      placeholder="Input in minutes"
+      [(ngModel)]="data"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched()"
+    />
+    <p>{{ data | duration }}</p>
+  </div>
+</div>

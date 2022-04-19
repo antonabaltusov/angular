@@ -1,9 +1,9 @@
 .edit
-  position: fixed
-  top: 50%
+  position: absolute
+  top: 50px
   left: 50%
   width: 60%
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, 0%)
   background-color: white
   box-sizing: border-box
   border: none
@@ -75,6 +75,8 @@ button
   margin-bottom: 5px
   &.required:after
     content: " *"
+  &.has-error:after
+    content: ' Required field'
 
 .input
   border: 1px solid #d7d9dd
@@ -105,3 +107,6 @@ button
   display: flex
   & p
     margin-left: 10px
+.has-error
+  color: red
+  border-color: red

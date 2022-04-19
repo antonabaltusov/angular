@@ -1,0 +1,16 @@
+<div class="form-input">
+  <label [class.has-error]="!valid && touched" class="label required"
+    >Date</label
+  >
+  <input
+    maxlength="500"
+    [class.input_has-error]="!valid && touched"
+    type="text"
+    [(ngModel)]="date"
+    (ngModelChange)="onChange($event)"
+    class="input"
+    placeholder="Enter a date of course"
+    maxlength="10"
+    (blur)="onTouched()"
+  />
+</div>

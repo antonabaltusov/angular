@@ -1,0 +1,32 @@
+.form-input
+  display: flex
+  flex-direction: column
+  margin: 10px 0px
+  width: 100%
+.duration
+  display: flex
+  & p
+    align-self: center
+    margin: auto 10px
+
+.label
+  font-size: 12px
+  color: #9a9ca7
+  margin-bottom: 5px
+  &.required:after
+    content: " *"
+  &.has-error:after
+    content: ' Must be greater than zero'
+
+.input
+  border: 1px solid #d7d9dd
+  border-radius: 2px
+  padding: 5px 8px
+  resize: none
+  &::placeholder
+    color: #d7d9dd
+  &_has-error
+    border-color: red
+
+.has-error
+  color: red

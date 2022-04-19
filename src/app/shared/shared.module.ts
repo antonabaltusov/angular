@@ -11,6 +11,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { LoadingComponent } from './components/loading/loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HeaderComponent,
     LoadingComponent,
   ],
-  imports: [CoreModule],
+  imports: [CoreModule, ReactiveFormsModule],
   exports: [
     BgCardDirective,
     DurationPipe,
@@ -31,6 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     NotFoundComponent,
     HeaderComponent,
     LoadingComponent,
+    ReactiveFormsModule,
   ],
   providers: [
     {

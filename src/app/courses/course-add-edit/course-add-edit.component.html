@@ -5,7 +5,56 @@
     <p>{{ nameBlock }}</p>
     <i (click)="cancel()" class="fa-regular fa-rectangle-xmark"></i>
   </div>
-  <div class="form">
+  <form [formGroup]="form" (ngSubmit)="save()" class="form" *ngIf="form">
+    <p class="form-input">
+      <label
+        class="label required"
+        [class.has-error]="name?.invalid && name?.touched"
+        >Title</label
+      >
+      <input
+        maxlength="50"
+        [class.has-error]="name?.invalid && name?.touched"
+        type="text"
+        formControlName="name"
+        class="input"
+        placeholder="Enter a name of course"
+      />
+    </p>
+    <p class="form-input">
+      <label
+        class="label required"
+        [class.has-error]="description?.invalid && description?.touched"
+        >Description</label
+      >
+      <textarea
+        maxlength="500"
+        [class.has-error]="description?.invalid && description?.touched"
+        type="text"
+        formControlName="description"
+        class="input"
+        placeholder="Enter a description of course"
+      ></textarea>
+    </p>
+    <app-date formControlName="date"></app-date>
+    <app-duration formControlName="length"></app-duration>
+    <app-authors formArrayName="authors"></app-authors>
+    <p>{{ form.value | json }}</p>
+    <div class="form-buttons">
+      <button class="cancel" (click)="cancel()">Cancel</button>
+      <button
+        [ngClass]="{ save: form.valid, disabled: !form.valid }"
+        class="save"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Save
+      </button>
+    </div>
+    <p>form is valid: {{ form.valid ? "true" : "false" }}</p>
+  </form>
+
+  <!-- <div class="form">
     <div class="form-input">
       <label for="titleInput" class="label required">Title</label>
       <input
@@ -61,5 +110,5 @@
       <button class="cancel" (click)="cancel()">Cancel</button>
       <button class="save" (click)="save()">Save</button>
     </div>
-  </div>
+  </div> -->
 </div>

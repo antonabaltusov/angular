@@ -1,25 +1,12 @@
-import {
-  Component,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   debounceTime,
-  delay,
   distinctUntilChanged,
   filter,
-  flatMap,
   map,
-  Observable,
-  of,
   Subject,
   Subscription,
-  switchMap,
-  takeUntil,
-  throttleTime,
 } from 'rxjs';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CoursesService } from '../../services/courses/courses.service';

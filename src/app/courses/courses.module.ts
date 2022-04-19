@@ -8,6 +8,9 @@ import { DatePipe } from '@angular/common';
 import { CoursesRoutingModule } from './courses-routing.module';
 import { CoursePageComponent } from './course-page/course-page.component';
 import { BreadcrumbModule } from 'xng-breadcrumb';
+import { DateComponent } from './course-add-edit/date/date.component';
+import { DurationComponent } from './course-add-edit/duration/duration.component';
+import { AuthorsComponent } from './course-add-edit/authors/authors.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +18,9 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
     CoursesItemComponent,
     CourseAddEditComponent,
     CoursePageComponent,
+    DateComponent,
+    DurationComponent,
+    AuthorsComponent,
   ],
   imports: [CoreModule, SharedModule, CoursesRoutingModule, BreadcrumbModule],
   providers: [DatePipe],

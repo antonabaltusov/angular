@@ -1,0 +1,19 @@
+<div>
+  <p *ngFor="let author of form.value; let i = index">
+    {{ author.firstName }} {{ author.lastName }}
+    <button (click)="removeAuthor(i)">x</button>
+  </p>
+</div>
+<input
+  [class.input_has-error]="form.invalid && form.touched"
+  class="search_input"
+  placeholder="Search by name, description or date"
+  [(ngModel)]="input"
+  (input)="onChange.next($event)"
+  (blur)="form.markAsTouched()"
+/>
+<select size="5" (change)="addAuthor($event)">
+  <option *ngFor="let author of authors" [value]="author.id">
+    {{ author.name }}
+  </option>
+</select>
