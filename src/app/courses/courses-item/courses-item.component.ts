@@ -20,10 +20,7 @@ export class CoursesItemComponent implements OnInit {
   @Output() onEdit: EventEmitter<number> = new EventEmitter<number>();
   constructor() {}
 
-  ngOnInit(): void {
-    let fakeValue = 'fakeValue';
-    console.log('ngOnInit ' + fakeValue);
-  }
+  ngOnInit(): void {}
 
   public delete(): void {
     this.onDelete.emit(this.course.id);

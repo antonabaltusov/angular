@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAuthor } from '../../shared/models/user/author.model';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 import { ICourse } from '../../shared/models/course/course.model';
 import { LoadingService } from '../loading/loading.service';
 
@@ -16,7 +16,6 @@ interface IAnswerGetCourses {
 export class CoursesService {
   private url = 'http://localhost:3004/courses';
   private coust = 10;
-  private courses: ICourse[];
 
   constructor(
     private http: HttpClient,
@@ -36,8 +35,7 @@ export class CoursesService {
         }`
       )
       .pipe(
-        tap((data) => {
-          this.courses = data.courses;
+        tap(() => {
           this.loadingService.changeShow(false);
         })
       );
@@ -56,28 +54,27 @@ export class CoursesService {
 
   createCourse(course: ICourse): Observable<ICourse> {
     this.loadingService.changeShow(true);
-    console.log(course);
 
     return this.http
       .post<ICourse>(this.url, course)
       .pipe(tap(() => this.loadingService.changeShow(false)));
   }
 
-  getCourseById(id: number): Observable<ICourse | undefined> {
-    let course = this.courses?.find((course) => course.id == id);
-    if (course) {
-      return new BehaviorSubject<ICourse>(course).asObservable();
-    } else {
-      this.loadingService.changeShow(true);
-      return this.http
-        .get<ICourse>(`http://localhost:3004/course?id=${id}`)
-        .pipe(
-          tap(() => {
-            this.loadingService.changeShow(false);
-          })
-        );
-    }
-  }
+  // getCourseById(id: number): Observable<ICourse | undefined> {
+  //   let course = this.courses?.find((course) => course.id == id);
+  //   if (course) {
+  //     return new BehaviorSubject<ICourse>(course).asObservable();
+  //   } else {
+  //     this.loadingService.changeShow(true);
+  //     return this.http
+  //       .get<ICourse>(`http://localhost:3004/course?id=${id}`)
+  //       .pipe(
+  //         tap(() => {
+  //           this.loadingService.changeShow(false);
+  //         })
+  //       );
+  //   }
+  // }
 
   updateCourse(editCourse: ICourse): Observable<ICourse> {
     this.loadingService.changeShow(true);

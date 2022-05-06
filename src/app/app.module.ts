@@ -9,18 +9,20 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BreadcrumbModule, BreadcrumbService } from 'xng-breadcrumb';
+import { RootStoreModule } from './core/@ngrx/root-store.module';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent],
   imports: [
     CoreModule,
-    AppRoutingModule,
     LoginModule,
     CoursesModule,
-    SharedModule,
     BrowserModule,
     HttpClientModule,
+    RootStoreModule,
     BreadcrumbModule,
+    SharedModule,
+    AppRoutingModule,
   ],
   providers: [BreadcrumbService],
   bootstrap: [AppComponent],

@@ -1,18 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ICourse } from '../models/course/course.model';
+import { CourseClass, ICourse } from '../models';
 
 @Pipe({
   name: 'orderBy',
 })
 export class OrderByPipe implements PipeTransform {
-  transform(array: any[], field: string): ICourse[] {
-    if (array.length) {
-      if (field && field in array[0]) {
-        return array.sort((a, b) =>
-          a[field] > b[field] ? 1 : b[field] > a[field] ? -1 : 0
+  transform(
+    array: readonly CourseClass[] | null,
+    field: keyof ICourse
+  ): ICourse[] | readonly CourseClass[] | null {
+    if (array != null && array.length) {
+      const courses: ICourse[] = [...array];
+      if (field != 'id' && field != 'isTopRated') {
+        return courses.sort((a, b) =>
+          a[field] > b[field] ? -1 : b[field] > a[field] ? 1 : 0
         );
       } else {
-        return array;
+        return courses;
       }
     } else {
       return array;

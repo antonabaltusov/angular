@@ -109,5 +109,8 @@
       }
     }
   },
-  "defaultProject": "angular-run"
+  "defaultProject": "angular-run",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

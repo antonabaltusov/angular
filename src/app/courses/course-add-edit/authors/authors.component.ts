@@ -7,10 +7,12 @@ import {
   NG_VALIDATORS,
   Validator,
 } from '@angular/forms';
-import { CoursesService } from '../../../services/courses/courses.service';
 import { IAuthor } from '../../../shared/models/user/author.model';
-import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { IUser } from '../../../shared/models/user/user.model';
+import { Store } from '@ngrx/store';
+import { AppState, selectCoursesAuthors } from '../../../core/@ngrx';
+import * as CoursesActions from '../../../core/@ngrx';
 
 @Component({
   selector: 'app-authors',
@@ -30,40 +32,28 @@ export class AuthorsComponent implements OnInit, Validator {
   public onChange = new Subject<Event>();
   public input: string = '';
   public showSearch: boolean;
+  private sub: Subscription;
 
   form!: FormArray;
 
   constructor(
     private rootFormGroup: FormGroupDirective,
-    private coursesService: CoursesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.getAuthorsList('');
-    this.search();
+    this.store.dispatch(CoursesActions.getAuthors({ input: '' }));
+    this.sub = this.store
+      .select(selectCoursesAuthors)
+      .subscribe((authors) => (this.authors = authors));
+
     this.form = this.rootFormGroup.control.get(this.formArrayName) as FormArray;
     this.showSearch = !this.form.value.length;
   }
 
   public validate(c: FormControl) {
     return this.form.length > 0 ? null : { valid: false };
-  }
-
-  public search(): void {
-    this.onChange
-      .pipe(
-        map((event: any) => (<HTMLInputElement>event.target).value),
-        debounceTime(500),
-        distinctUntilChanged()
-      )
-      .subscribe((data) => this.getAuthorsList(data));
-  }
-
-  private getAuthorsList(data?: string) {
-    this.coursesService.getAuthorsList(data).subscribe((data) => {
-      this.authors = data;
-    });
   }
 
   initAuthor(author: IAuthor) {

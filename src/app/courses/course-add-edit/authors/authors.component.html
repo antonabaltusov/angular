@@ -14,7 +14,6 @@
     </button>
   </div>
   <input
-    autofocus
     *ngIf="showSearch"
     [class.input_has-error]="form.invalid && form.touched"
     class="input"
@@ -31,7 +30,7 @@
   >
     <option
       class="form-option"
-      *ngFor="let author of authors"
+      *ngFor="let author of authors | searchByTitle: input"
       [value]="author.id"
     >
       {{ author.name }}

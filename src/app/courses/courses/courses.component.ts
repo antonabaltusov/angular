@@ -1,17 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import {
+  AppState,
+  selectCoursesData,
+  selectLengthDataBD,
+} from '../../core/@ngrx';
+import * as CoursesActions from '../../core/@ngrx';
 import {
   debounceTime,
   distinctUntilChanged,
   filter,
-  map,
-  Subject,
-  Subscription,
+  Observable,
+  tap,
 } from 'rxjs';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { CoursesService } from '../../services/courses/courses.service';
-import { ICourse } from '../../shared/models/course/course.model';
+import { CourseClass, ICourse } from '../../shared/models';
 
 @Component({
   selector: 'app-courses',
@@ -20,69 +25,55 @@ import { ICourse } from '../../shared/models/course/course.model';
   providers: [CoursesService],
 })
 export class CoursesComponent implements OnInit {
-  public sortBy: string = 'date';
-  public courses: ICourse[];
-  public inputSearch: string = '';
-  public inputForm: FormControl;
-  public lenghtBD: number = 0;
-  public keyUp = new Subject<Event>();
-  private subscription: Subscription;
+  public sortBy: keyof ICourse = 'date';
+  public inputForm: FormControl = this.fb.control(null);
+  public coursesState$!: Observable<ReadonlyArray<CourseClass>>;
+  public lenghtBD$!: Observable<number>;
+  public lenghtArrayCourses: number;
 
   constructor(
-    private coursesService: CoursesService,
     private breadcrumbService: BreadcrumbService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
-    this.inputForm = this.fb.control('');
-    this.getList();
-    this.search();
-    this.breadcrumbService.set('@Courses', 'Courses');
-  }
+    this.coursesState$ = this.store
+      .select(selectCoursesData)
+      .pipe(tap((courses) => (this.lenghtArrayCourses = courses.length)));
+    this.lenghtBD$ = this.store.select(selectLengthDataBD);
+    //this.getCourses();
 
-  private getList(search?: string) {
-    this.coursesService.getList(0, search).subscribe((data) => {
-      this.lenghtBD = data.length;
-      this.courses = data.courses;
-    });
-  }
-
-  public search(): void {
     this.inputForm.valueChanges
       .pipe(
         filter((data) => data.length > 3 || data.length == 0),
         debounceTime(500),
         distinctUntilChanged()
       )
-      .subscribe((data) => this.getList(data));
+      .subscribe((data) => this.getCourses(data));
+
+    this.breadcrumbService.set('@Courses', 'Courses');
+  }
+  public getCourses(input?: string) {
+    this.store.dispatch(
+      CoursesActions.getCourses({
+        start: 0,
+        inputSearch: input ? input : this.inputForm.value,
+      })
+    );
   }
 
-  public update(boolean: any) {
-    if (boolean) {
-      this.coursesService
-        .getList(0, this.inputSearch, this.courses.length)
-        .subscribe((data) => {
-          this.lenghtBD = data.length;
-          this.courses = data.courses;
-        });
-    }
-  }
-
-  public delete(id: number) {
+  public delete(courseId: number) {
     if (confirm('Do you really want to delete this course')) {
-      this.coursesService.removeCourse(id).subscribe(() => {
-        this.update(true);
-      });
+      this.store.dispatch(CoursesActions.deleteCourse({ courseId }));
     }
   }
-
   public loadMore() {
-    this.coursesService
-      .getList(this.courses.length, this.inputSearch)
-      .subscribe((data) => {
-        this.lenghtBD = data.length;
-        this.courses.push(...data.courses);
-      });
+    this.store.dispatch(
+      CoursesActions.loadMoreCourses({
+        start: this.lenghtArrayCourses,
+        inputSearch: this.inputForm.value,
+      })
+    );
   }
 }

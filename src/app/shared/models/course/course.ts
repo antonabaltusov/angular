@@ -10,10 +10,10 @@ export class CourseClass implements ICourse {
   authors: IUser[];
 
   constructor(
-    name: string,
-    date: string,
-    length: number,
-    description: string,
+    name: string = '',
+    date: string = '',
+    length: number = 0,
+    description: string = '',
     user?: IUser[],
     id?: number
   ) {
