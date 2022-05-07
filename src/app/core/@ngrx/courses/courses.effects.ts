@@ -69,7 +69,7 @@ export class CoursesEffects {
   updateCourse$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(CoursesActions.updateCourse),
-      switchMap((action) =>
+      concatMap((action) =>
         this.coursesService.updateCourse(action.course).pipe(
           map((course) => {
             return CoursesActions.updateCourseSuccess({ course });
@@ -83,7 +83,7 @@ export class CoursesEffects {
   createCourse$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(CoursesActions.createCourse),
-      switchMap((action) =>
+      concatMap((action) =>
         this.coursesService.createCourse(action.course).pipe(
           map((course) => {
             return CoursesActions.createCourseSuccess({ course });

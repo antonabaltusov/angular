@@ -1,21 +1,20 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { CoursesState, initialCoursesState } from './courses.state';
+import { adapter, CoursesState, initialCoursesState } from './courses.state';
 import * as CoursesActions from './courses.actions';
 
 export const reducer = createReducer(
   initialCoursesState,
   on(CoursesActions.getCoursesSuccess, (state, { courses, lengthBD }) => {
-    return { ...state, courses, lengthBD };
+    return adapter.setAll(courses, { ...state, lengthBD });
   }),
   on(
     CoursesActions.loadMoreCoursesSuccess,
     (state, { newCourses, lengthBD }) => {
-      return { ...state, courses: [...state.courses, ...newCourses], lengthBD };
+      return adapter.addMany(newCourses, { ...state, lengthBD });
     }
   ),
   on(CoursesActions.deleteCourseSuccess, (state, { courseId }) => {
-    const courses = state.courses.filter((course) => course.id != courseId);
-    return { ...state, courses };
+    return adapter.removeOne(courseId, state);
   }),
   on(CoursesActions.getAuthorsSuccess, (state, { authors }) => {
     return { ...state, authors };
@@ -32,20 +31,10 @@ export const reducer = createReducer(
     }
   ),
   on(CoursesActions.updateCourseSuccess, (state, { course }) => {
-    const courses = state.courses.map((_course) => {
-      if (_course.id == course.id) {
-        return course;
-      } else {
-        return _course;
-      }
-    });
-    console.log(course);
-
-    return { ...state, courses };
+    return adapter.updateOne({ id: course.id, changes: course }, state);
   }),
   on(CoursesActions.createCourseSuccess, (state, { course }) => {
-    const courses = [...state.courses, course];
-    return { ...state, courses };
+    return adapter.addOne(course, state);
   })
 );
 

@@ -1,7 +1,7 @@
 import { IUser } from '../user/user.model';
 
 export interface ICourse {
-  id?: number;
+  id: number;
   name: string;
   date: string;
   length: number;

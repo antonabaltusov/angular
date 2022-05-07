@@ -2,19 +2,20 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CourseClass } from '../../../shared/models';
 import { AppState } from '../app.state';
 import { selectRouterState } from '../router';
-import { CoursesState } from './courses.state';
+import { CoursesState, adapter } from './courses.state';
 
 export const selectCoursesState = createFeatureSelector<AppState, CoursesState>(
   'courses'
 );
 
-export const selectCoursesData = createSelector(
-  selectCoursesState,
-  (state: CoursesState) => state.courses
-);
+export const {
+  selectEntities: selectCoursesEntities,
+  selectAll: selectCoursesData,
+} = adapter.getSelectors(selectCoursesState);
+
 export const selectLengthData = createSelector(
-  selectCoursesState,
-  (state: CoursesState) => state.courses.length
+  selectCoursesData,
+  (courses: CourseClass[]) => courses.length
 );
 export const selectLengthDataBD = createSelector(
   selectCoursesState,
@@ -26,25 +27,14 @@ export const selectCoursesAuthors = createSelector(
 );
 
 export const selectSelectedCourseByUrl = createSelector(
-  selectCoursesData,
+  selectCoursesEntities,
   selectRouterState,
   (courses, router): CourseClass => {
     const courseID = router.state.params['id'];
-    if (courseID && Array.isArray(courses)) {
-      return courses.find((course) => course.id === +courseID);
+    if (courseID) {
+      return courses[courseID] as CourseClass;
     } else {
       return new CourseClass();
     }
   }
 );
-
-export const selectAuthorsByInput = (input?: string) =>
-  createSelector(selectCoursesAuthors, (authors) => {
-    if (!!input) {
-      return authors.filter(
-        (author) => author.name.toUpperCase().indexOf(input.toUpperCase()) >= 0
-      );
-    } else {
-      return authors;
-    }
-  });
