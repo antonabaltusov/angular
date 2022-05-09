@@ -38,7 +38,10 @@
     </p>
     <app-date formControlName="date"></app-date>
     <app-duration formControlName="length"></app-duration>
-    <app-authors formArrayName="authors"></app-authors>
+    <app-authors
+      formArrayName="authors"
+      [authors]="authors | async"
+    ></app-authors>
     <div class="form-buttons">
       <button class="cancel" (click)="cancel()">Cancel</button>
       <button

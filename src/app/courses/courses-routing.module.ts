@@ -4,6 +4,7 @@ import { CourseAddEditComponent } from './course-add-edit/course-add-edit.compon
 import { CoursePageComponent } from './course-page/course-page.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseExistsGuard, CoursesStatePreloadingGuard } from './guards';
+import { AuthorStatePreloadingGuard } from './guards/authors-state-preloading.guard';
 
 const routes: Routes = [
   {
@@ -14,12 +15,13 @@ const routes: Routes = [
     children: [
       {
         path: 'new',
+        canActivate: [AuthorStatePreloadingGuard],
         component: CourseAddEditComponent,
         data: { breadcrumb: { alias: 'new' } },
       },
       {
         path: 'edit/:id',
-        canActivate: [CourseExistsGuard],
+        canActivate: [CourseExistsGuard, AuthorStatePreloadingGuard],
         component: CourseAddEditComponent,
         data: { breadcrumb: { alias: `course` } },
       },

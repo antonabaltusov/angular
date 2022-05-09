@@ -1,20 +1,17 @@
-import { Store } from '@ngrx/store';
-import { AppState, selectCoursesData } from '../../core/@ngrx';
 import { CourseClass } from '../../shared/models/course/course';
-import * as CoursesActions from '../../core/@ngrx';
-import { filter, map, Observable, take, tap } from 'rxjs';
+import { filter, Observable, take, tap } from 'rxjs';
+import { EntityCollectionService } from '@ngrx/data';
 
-export function checkStore(store: Store<AppState>): Observable<boolean> {
-  return store.select(selectCoursesData).pipe(
-    tap((courses) => {
-      if (!courses.length) {
-        store.dispatch(
-          CoursesActions.getCourses({ start: 0, inputSearch: '' })
-        );
+export function checkStore(
+  courseService: EntityCollectionService<CourseClass>
+): Observable<boolean> {
+  return courseService.loaded$.pipe(
+    tap((Loaded: boolean) => {
+      if (!Loaded) {
+        courseService.getWithQuery({ start: '0', count: '10', sort: 'date' });
       }
     }),
-    filter((courses) => !!courses.length),
-    map(() => true),
+    filter((Loaded) => !!Loaded),
     take(1)
   );
 }

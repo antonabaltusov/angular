@@ -55,12 +55,17 @@
 </div>
 <div class="courses-list" *ngIf="coursesState$ | async">
   <app-courses-item
-    (onDelete)="delete($event)"
-    *ngFor="let course of coursesState$ | async | orderBy: sortBy"
+    *ngFor="
+      let course of coursesState$
+        | async
+        | orderBy: sortBy
+        | searchByTitle: inputForm.value
+    "
     [course]="course"
   ></app-courses-item>
+  <app-loading *ngIf="coursesLoading$ | async"></app-loading>
   <button
-    *ngIf="(coursesState$ | async)?.length != (lenghtBD$ | async)"
+    *ngIf="!(coursesLoading$ | async)"
     class="container load-more"
     (click)="loadMore()"
   >

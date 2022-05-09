@@ -1,48 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import {
-  AppState,
-  selectCoursesData,
-  selectLengthDataBD,
-} from '../../core/@ngrx';
-import * as CoursesActions from '../../core/@ngrx';
 import {
   debounceTime,
   distinctUntilChanged,
   filter,
   Observable,
-  tap,
+  Subscription,
 } from 'rxjs';
 import { BreadcrumbService } from 'xng-breadcrumb';
-import { CoursesService } from '../../services/courses/courses.service';
 import { CourseClass, ICourse } from '../../shared/models';
+import { EntityCollectionService, EntityServices } from '@ngrx/data';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.sass'],
-  providers: [CoursesService],
 })
 export class CoursesComponent implements OnInit {
-  public sortBy: keyof ICourse = 'date';
+  public sortBy: keyof CourseClass = 'date';
   public inputForm: FormControl = this.fb.control(null);
   public coursesState$!: Observable<ReadonlyArray<CourseClass>>;
-  public lenghtBD$!: Observable<number>;
-  public lenghtArrayCourses: number;
+  public coursesLoading$!: Observable<boolean>;
+  private countCourses: number;
+  private courseService: EntityCollectionService<CourseClass>;
+  public sub: Subscription;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
     private fb: FormBuilder,
-    private store: Store<AppState>
-  ) {}
+    entityServices: EntityServices
+  ) {
+    this.courseService = entityServices.getEntityCollectionService('Courses');
+  }
 
   ngOnInit(): void {
-    this.coursesState$ = this.store
-      .select(selectCoursesData)
-      .pipe(tap((courses) => (this.lenghtArrayCourses = courses.length)));
-    this.lenghtBD$ = this.store.select(selectLengthDataBD);
-    //this.getCourses();
+    this.coursesState$ = this.courseService.entities$;
+    this.coursesLoading$ = this.courseService.loading$;
+    this.sub = this.courseService.count$.subscribe(
+      (number) => (this.countCourses = number)
+    );
 
     this.inputForm.valueChanges
       .pipe(
@@ -50,30 +46,24 @@ export class CoursesComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged()
       )
-      .subscribe((data) => this.getCourses(data));
+      .subscribe((data) =>
+        this.courseService.getWithQuery({
+          start: `${this.countCourses}`,
+          count: '10',
+          textFragment: `${data}`,
+          sort: this.sortBy,
+        })
+      );
 
     this.breadcrumbService.set('@Courses', 'Courses');
   }
-  public getCourses(input?: string) {
-    this.store.dispatch(
-      CoursesActions.getCourses({
-        start: 0,
-        inputSearch: input ? input : this.inputForm.value,
-      })
-    );
-  }
 
-  public delete(courseId: number) {
-    if (confirm('Do you really want to delete this course')) {
-      this.store.dispatch(CoursesActions.deleteCourse({ courseId }));
-    }
-  }
   public loadMore() {
-    this.store.dispatch(
-      CoursesActions.loadMoreCourses({
-        start: this.lenghtArrayCourses,
-        inputSearch: this.inputForm.value,
-      })
-    );
+    this.courseService.getWithQuery({
+      start: `${this.countCourses}`,
+      count: '10',
+      textFragment: `${this.inputForm.value ? this.inputForm.value : ''}`,
+      sort: this.sortBy,
+    });
   }
 }

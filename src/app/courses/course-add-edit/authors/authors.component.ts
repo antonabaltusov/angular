@@ -8,11 +8,9 @@ import {
   Validator,
 } from '@angular/forms';
 import { IAuthor } from '../../../shared/models/user/author.model';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IUser } from '../../../shared/models/user/user.model';
-import { Store } from '@ngrx/store';
-import { AppState, selectCoursesAuthors } from '../../../core/@ngrx';
-import * as CoursesActions from '../../../core/@ngrx';
+import { EntityCollectionService, EntityServices } from '@ngrx/data';
 
 @Component({
   selector: 'app-authors',
@@ -28,26 +26,18 @@ import * as CoursesActions from '../../../core/@ngrx';
 })
 export class AuthorsComponent implements OnInit, Validator {
   @Input() formArrayName!: string;
-  public authors: IAuthor[];
-  public onChange = new Subject<Event>();
+  @Input() public authors!: IAuthor[] | null;
   public input: string = '';
   public showSearch: boolean;
-  private sub: Subscription;
-
+  public sub: Subscription;
   form!: FormArray;
 
   constructor(
     private rootFormGroup: FormGroupDirective,
-    private fb: FormBuilder,
-    private store: Store<AppState>
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(CoursesActions.getAuthors({ input: '' }));
-    this.sub = this.store
-      .select(selectCoursesAuthors)
-      .subscribe((authors) => (this.authors = authors));
-
     this.form = this.rootFormGroup.control.get(this.formArrayName) as FormArray;
     this.showSearch = !this.form.value.length;
   }
@@ -69,7 +59,7 @@ export class AuthorsComponent implements OnInit, Validator {
   addAuthor(event: any) {
     const id = event.target.value;
     if (!this.form.value.some((author: IUser) => author.id == id)) {
-      const author = this.authors.find((author) => author.id == id);
+      const author = this.authors?.find((author) => author.id == id);
       if (author) {
         this.form.push(this.initAuthor(author));
       }

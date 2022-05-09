@@ -8,8 +8,8 @@ export class OrderByPipe implements PipeTransform {
   transform(
     array: readonly CourseClass[] | null,
     field: keyof ICourse
-  ): ICourse[] | readonly CourseClass[] | null {
-    if (array != null && array.length) {
+  ): ICourse[] | null {
+    if (array != null) {
       const courses: ICourse[] = [...array];
       if (field != 'id' && field != 'isTopRated') {
         return courses.sort((a, b) =>
@@ -19,7 +19,7 @@ export class OrderByPipe implements PipeTransform {
         return courses;
       }
     } else {
-      return array;
+      return null;
     }
   }
 }

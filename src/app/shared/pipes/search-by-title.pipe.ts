@@ -5,14 +5,21 @@ import { IAuthor } from '../models';
   name: 'searchByTitle',
 })
 export class SearchByTitlePipe implements PipeTransform {
-  transform(authors: IAuthor[], value: string): IAuthor[] {
-    if (value) {
-      const lowerValue = value.toLocaleLowerCase();
-      return authors.filter((author) =>
-        author.name.toLocaleLowerCase().includes(lowerValue)
-      );
+  transform(array: any[] | null, value: string): any[] | null {
+    if (array) {
+      if (value) {
+        const lowerValue = value.toLocaleLowerCase();
+        return array.filter((item) =>
+          item.name
+            .concat(item.description)
+            .toLocaleLowerCase()
+            .includes(lowerValue)
+        );
+      } else {
+        return array;
+      }
     } else {
-      return authors;
+      return null;
     }
   }
 }

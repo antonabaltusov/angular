@@ -79,11 +79,7 @@
         </g>
       </svg>
     </button>
-    <button
-      class="buttons edit"
-      [routerLink]="['edit/', course.id]"
-      [routerLinkActive]="'active'"
-    >
+    <button class="buttons edit" (click)="edit()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"

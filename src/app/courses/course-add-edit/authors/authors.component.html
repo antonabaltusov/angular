@@ -17,9 +17,8 @@
     *ngIf="showSearch"
     [class.input_has-error]="form.invalid && form.touched"
     class="input"
-    placeholder="Search by name, description or date"
+    placeholder="Search by firstName or lastName"
     [(ngModel)]="input"
-    (input)="onChange.next($event)"
     (blur)="form.markAsTouched()"
   />
   <select

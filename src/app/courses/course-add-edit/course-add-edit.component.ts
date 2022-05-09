@@ -1,26 +1,17 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CourseClass } from '../../shared/models/course/course';
 import { ICourse } from '../../shared/models/course/course.model';
 import { BreadcrumbService } from 'xng-breadcrumb';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState, selectSelectedCourseByUrl } from '../../core/@ngrx';
+import { AppState } from '../../core/@ngrx';
 import * as CoursesActions from '../../core/@ngrx';
 import * as RouterActions from '../../core/@ngrx';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { EntityCollectionService, EntityServices } from '@ngrx/data';
+import { IAuthor } from '../../shared/models';
+import { selectSelectedCourseByUrl } from '../../core/@ngrx/data/entity-store.module';
 
 @Component({
   selector: 'app-course-add-edit',
@@ -28,22 +19,28 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./course-add-edit.component.sass'],
 })
 export class CourseAddEditComponent implements OnInit, OnDestroy {
-  @Output() onSave: EventEmitter<boolean> = new EventEmitter<boolean>();
   public nameBlock = 'Add Cousre';
   public form: FormGroup;
+  public authors: Observable<IAuthor[]> | Store<IAuthor[]>;
   private componentDestroyed$: Subject<void> = new Subject<void>();
+  private authorService: EntityCollectionService<IAuthor>;
+
   constructor(
     private datePipe: DatePipe,
     private breadcrumbService: BreadcrumbService,
     private fb: FormBuilder,
-    private store: Store<AppState>
-  ) {}
+    private store: Store<AppState>,
+    entityServices: EntityServices
+  ) {
+    this.authorService = entityServices.getEntityCollectionService('Authors');
+  }
   ngOnDestroy(): void {
     this.componentDestroyed$.next();
     this.componentDestroyed$.complete();
   }
 
   async ngOnInit() {
+    this.authors = this.authorService.entities$;
     const observer: any = {
       next: (course: CourseClass) => {
         this.newForm(course);
