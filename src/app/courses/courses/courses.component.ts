@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  Observable,
-  Subscription,
-} from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Observable } from 'rxjs';
 import { BreadcrumbService } from 'xng-breadcrumb';
-import { CourseClass, ICourse } from '../../shared/models';
-import { EntityCollectionService, EntityServices } from '@ngrx/data';
+import { CourseClass } from '../../shared/models';
+import { CoursesFacade } from '../../core/@ngrx';
 
 @Component({
   selector: 'app-courses',
@@ -17,28 +11,22 @@ import { EntityCollectionService, EntityServices } from '@ngrx/data';
   styleUrls: ['./courses.component.sass'],
 })
 export class CoursesComponent implements OnInit {
-  public sortBy: keyof CourseClass = 'date';
+  sortBy: keyof CourseClass = 'date';
   public inputForm: FormControl = this.fb.control(null);
   public coursesState$!: Observable<ReadonlyArray<CourseClass>>;
   public coursesLoading$!: Observable<boolean>;
-  private countCourses: number;
-  private courseService: EntityCollectionService<CourseClass>;
-  public sub: Subscription;
+  public coursesError$!: Observable<Error | string | null>;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
     private fb: FormBuilder,
-    entityServices: EntityServices
-  ) {
-    this.courseService = entityServices.getEntityCollectionService('Courses');
-  }
+    private coursesFacade: CoursesFacade
+  ) {}
 
   ngOnInit(): void {
-    this.coursesState$ = this.courseService.entities$;
-    this.coursesLoading$ = this.courseService.loading$;
-    this.sub = this.courseService.count$.subscribe(
-      (number) => (this.countCourses = number)
-    );
+    this.coursesState$ = this.coursesFacade.courses$;
+    this.coursesLoading$ = this.coursesFacade.coursesLoading$;
+    this.coursesError$ = this.coursesFacade.coursesError$;
 
     this.inputForm.valueChanges
       .pipe(
@@ -46,24 +34,12 @@ export class CoursesComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged()
       )
-      .subscribe((data) =>
-        this.courseService.getWithQuery({
-          start: `${this.countCourses}`,
-          count: '10',
-          textFragment: `${data}`,
-          sort: this.sortBy,
-        })
-      );
+      .subscribe((input) => this.coursesFacade.getCoursesWithQuery({ input }));
 
     this.breadcrumbService.set('@Courses', 'Courses');
   }
 
   public loadMore() {
-    this.courseService.getWithQuery({
-      start: `${this.countCourses}`,
-      count: '10',
-      textFragment: `${this.inputForm.value ? this.inputForm.value : ''}`,
-      sort: this.sortBy,
-    });
+    this.coursesFacade.getCoursesWithQuery({ input: this.inputForm.value });
   }
 }

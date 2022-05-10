@@ -29,7 +29,7 @@
   >
     <option
       class="form-option"
-      *ngFor="let author of authors | searchByTitle: input"
+      *ngFor="let author of authors | orderBy: 'name' | searchByTitle: input"
       [value]="author.id"
     >
       {{ author.name }}

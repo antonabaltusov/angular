@@ -10,7 +10,6 @@ import {
 import { IAuthor } from '../../../shared/models/user/author.model';
 import { Subscription } from 'rxjs';
 import { IUser } from '../../../shared/models/user/user.model';
-import { EntityCollectionService, EntityServices } from '@ngrx/data';
 
 @Component({
   selector: 'app-authors',
@@ -26,7 +25,7 @@ import { EntityCollectionService, EntityServices } from '@ngrx/data';
 })
 export class AuthorsComponent implements OnInit, Validator {
   @Input() formArrayName!: string;
-  @Input() public authors!: IAuthor[] | null;
+  @Input() public authors!: readonly IAuthor[] | null;
   public input: string = '';
   public showSearch: boolean;
   public sub: Subscription;

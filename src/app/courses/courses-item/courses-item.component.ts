@@ -5,11 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ICourse } from '../../shared/models/course/course.model';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../core/@ngrx';
-import * as RouterActions from '../../core/@ngrx/router/router.actions';
-import { EntityCollectionService, EntityServices } from '@ngrx/data';
-import { CourseClass } from '../../shared/models';
+import { CoursesFacade } from '../../core/@ngrx';
 
 @Component({
   selector: 'app-courses-item',
@@ -19,21 +15,18 @@ import { CourseClass } from '../../shared/models';
 })
 export class CoursesItemComponent implements OnInit {
   @Input() course!: ICourse;
-  private courseService: EntityCollectionService<CourseClass>;
 
-  constructor(private store: Store<AppState>, entityServices: EntityServices) {
-    this.courseService = entityServices.getEntityCollectionService('Courses');
-  }
+  constructor(private coursesFacade: CoursesFacade) {}
 
   ngOnInit(): void {}
 
   public delete(): void {
     if (confirm('Do you really want to delete this course')) {
-      this.courseService.delete(this.course);
+      this.coursesFacade.deleteCourse(this.course);
     }
   }
 
   public edit(): void {
-    this.store.dispatch(RouterActions.go({ path: ['edit/', this.course.id] }));
+    this.coursesFacade.goTo({ path: ['edit/', this.course.id] });
   }
 }

@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-import * as RouterActions from '../../core/@ngrx/router';
-import * as CoursesActions from '../../core/@ngrx/courses';
-import { Store } from '@ngrx/store';
-import { AppState, selectCoursesData } from '../../core/@ngrx';
+import { CoursesFacade } from '../../core/@ngrx';
 import { CourseClass } from '../../shared/models';
 import { catchError, map, Observable, of, switchMap, take, tap } from 'rxjs';
-import { checkStore } from './check-store.function';
-import { EntityCollectionService, EntityServices } from '@ngrx/data';
+import { CoursesStatePreloadingGuard } from './courses-state-preloading.guard';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseExistsGuard implements CanActivate {
-  private courseService: EntityCollectionService<CourseClass>;
-  constructor(entityServices: EntityServices, private store: Store<AppState>) {
-    this.courseService = entityServices.getEntityCollectionService('Courses');
-  }
+  constructor(private coursesFacade: CoursesFacade) {}
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    return checkStore(this.courseService).pipe(
+    return this.coursesFacade.checkStore().pipe(
       switchMap(() => {
         const id = +route.paramMap.get('id')!;
         return this.hasCourse(id);
@@ -28,13 +21,13 @@ export class CourseExistsGuard implements CanActivate {
   }
 
   private hasCourse(id: number): Observable<boolean> {
-    return this.courseService.entities$.pipe(
+    return this.coursesFacade.courses$.pipe(
       map(
         (courses: CourseClass[]) => !!courses.find((course) => course.id === id)
       ),
       tap((result) => {
         if (!result) {
-          this.store.dispatch(RouterActions.go({ path: ['/courses'] }));
+          this.coursesFacade.goTo({ path: ['/courses'] });
         }
       }),
       take(1)

@@ -3,15 +3,10 @@ import { CourseClass } from '../../shared/models/course/course';
 import { ICourse } from '../../shared/models/course/course.model';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../core/@ngrx';
-import * as CoursesActions from '../../core/@ngrx';
-import * as RouterActions from '../../core/@ngrx';
+import { CoursesFacade } from '../../core/@ngrx';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { EntityCollectionService, EntityServices } from '@ngrx/data';
 import { IAuthor } from '../../shared/models';
-import { selectSelectedCourseByUrl } from '../../core/@ngrx/data/entity-store.module';
 
 @Component({
   selector: 'app-course-add-edit',
@@ -21,26 +16,22 @@ import { selectSelectedCourseByUrl } from '../../core/@ngrx/data/entity-store.mo
 export class CourseAddEditComponent implements OnInit, OnDestroy {
   public nameBlock = 'Add Cousre';
   public form: FormGroup;
-  public authors: Observable<IAuthor[]> | Store<IAuthor[]>;
+  public authors: Observable<readonly IAuthor[]>;
   private componentDestroyed$: Subject<void> = new Subject<void>();
-  private authorService: EntityCollectionService<IAuthor>;
 
   constructor(
     private datePipe: DatePipe,
     private breadcrumbService: BreadcrumbService,
     private fb: FormBuilder,
-    private store: Store<AppState>,
-    entityServices: EntityServices
-  ) {
-    this.authorService = entityServices.getEntityCollectionService('Authors');
-  }
+    private coursesFacade: CoursesFacade
+  ) {}
   ngOnDestroy(): void {
     this.componentDestroyed$.next();
     this.componentDestroyed$.complete();
   }
 
   async ngOnInit() {
-    this.authors = this.authorService.entities$;
+    this.authors = this.coursesFacade.authors$;
     const observer: any = {
       next: (course: CourseClass) => {
         this.newForm(course);
@@ -54,8 +45,7 @@ export class CourseAddEditComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.store
-      .select(selectSelectedCourseByUrl)
+    this.coursesFacade.selectedCoursesByUrl$
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe(observer);
   }
@@ -101,7 +91,7 @@ export class CourseAddEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    this.store.dispatch(RouterActions.go({ path: ['courses'] }));
+    this.coursesFacade.goTo({ path: ['courses'] });
   }
 
   public save(): void {
@@ -110,10 +100,8 @@ export class CourseAddEditComponent implements OnInit, OnDestroy {
       ...this.form.value,
       date: new Date(date[2], date[1] - 1, date[0]).toISOString(),
     };
-    if (course.id) {
-      this.store.dispatch(CoursesActions.updateCourse({ course }));
-    } else {
-      this.store.dispatch(CoursesActions.createCourse({ course }));
-    }
+    const method = course.id ? 'updateCourse' : 'createCourse';
+    this.coursesFacade[method](course);
+    this.coursesFacade.goTo({ path: ['courses'] });
   }
 }

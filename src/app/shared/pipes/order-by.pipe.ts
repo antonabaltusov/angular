@@ -6,7 +6,7 @@ import { CourseClass, ICourse } from '../models';
 })
 export class OrderByPipe implements PipeTransform {
   transform(
-    array: readonly CourseClass[] | null,
+    array: readonly any[] | null,
     field: keyof ICourse
   ): ICourse[] | null {
     if (array != null) {
