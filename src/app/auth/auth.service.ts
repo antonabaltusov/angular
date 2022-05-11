@@ -40,7 +40,7 @@ export class AuthService {
       })
       .pipe(
         tap((data) => {
-          window.localStorage.setItem('token', data.token);
+          localStorage.setItem('token', data.token);
           this.isAuthObs.next(this.isAuth());
           this.loadingService.changeShow(false);
         }),
@@ -49,13 +49,13 @@ export class AuthService {
   }
 
   logout(): void {
-    window.localStorage.removeItem('token');
+    localStorage.removeItem('token');
     this.isAuthObs.next(this.isAuth());
     this.router.navigate(['login']);
   }
 
   isAuth(): boolean {
-    return window.localStorage.getItem('token') ? true : false;
+    return !!localStorage.getItem('token');
   }
 
   getUserInfo(): Observable<IUser> {
